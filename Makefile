@@ -10,7 +10,7 @@ RED    := \033[0;31m
 NC     := \033[0m
 
 help: ## Show this help message
-	@echo "$(GREEN)Auth Service - Available Commands$(NC)"
+	@echo "$(GREEN)Catalog Service - Available Commands$(NC)"
 	@echo ""
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  $(YELLOW)%-20s$(NC) %s\n", $$1, $$2}'
 	@echo ""
@@ -33,7 +33,7 @@ test: ## Build and test locally with Docker
 
 clean: ## Clean up local containers and data
 	@echo "$(YELLOW)Cleaning up local environment...$(NC)"
-	@docker rm -f auth-service-test 2>/dev/null || true
+	@docker rm -f catalog-service-test 2>/dev/null || true
 	@docker-compose down -v
 	@echo "$(GREEN)✓ Cleanup complete$(NC)"
 
@@ -42,11 +42,11 @@ docker-build: ## Build Docker image only
 	@docker build \
 		--build-arg GH_USER=${GH_USER} \
 		--build-arg GH_TOKEN=${GH_TOKEN} \
-		-t auth-service:latest .
-	@echo "$(GREEN)✓ Image built: auth-service:latest$(NC)"
+		-t catalog-service:latest .
+	@echo "$(GREEN)✓ Image built: catalog-service:latest$(NC)"
 
 docker-clean: ## Remove Docker image
-	@docker rmi auth-service:latest 2>/dev/null || true
+	@docker rmi catalog-service:latest 2>/dev/null || true
 	@echo "$(GREEN)✓ Docker image removed$(NC)"
 
 # ============================================
@@ -84,37 +84,37 @@ validate: ## Validate Kubernetes configurations
 
 k8s-status: ## Show Kubernetes resources status
 	@echo "$(GREEN)Pods:$(NC)"
-	@kubectl get pods -n commerce -l app=auth-service
+	@kubectl get pods -n commerce -l app=catalog-service
 	@echo ""
 	@echo "$(GREEN)Services:$(NC)"
-	@kubectl get svc -n commerce -l app=auth-service
+	@kubectl get svc -n commerce -l app=catalog-service
 	@echo ""
 	@echo "$(GREEN)HPA:$(NC)"
 	@kubectl get hpa -n commerce
 	@echo ""
 	@echo "$(GREEN)Deployments:$(NC)"
-	@kubectl get deployments -n commerce -l app=auth-service
+	@kubectl get deployments -n commerce -l app=catalog-service
 
 k8s-logs: ## Show application logs
-	@kubectl logs -f deployment/auth-service -n commerce
+	@kubectl logs -f deployment/catalog-service -n commerce
 
 k8s-logs-db: ## Show MariaDB logs
-	@kubectl logs -f deployment/auth-service-mariadb -n commerce
+	@kubectl logs -f deployment/catalog-service-mariadb -n commerce
 
 k8s-describe: ## Describe pod (for debugging)
-	@kubectl describe pod -n commerce -l app=auth-service
+	@kubectl describe pod -n commerce -l app=catalog-service
 
 k8s-shell: ## Open shell in application pod
-	@kubectl exec -it deployment/auth-service -n commerce -- /bin/sh
+	@kubectl exec -it deployment/catalog-service -n commerce -- /bin/sh
 
 k8s-restart: ## Restart application deployment
-	@kubectl rollout restart deployment/auth-service -n commerce
+	@kubectl rollout restart deployment/catalog-service -n commerce
 	@echo "$(GREEN)✓ Deployment restarted$(NC)"
 
 k8s-clean: ## Delete all Kubernetes resources
 	@echo "$(YELLOW)Deleting all resources from commerce namespace...$(NC)"
-	@kubectl delete deployment,svc,configmap,secret,hpa,pdb -n commerce -l app=auth-service 2>/dev/null || true
-	@kubectl delete deployment,svc,secret,pvc -n commerce -l app=auth-service-mariadb 2>/dev/null || true
+	@kubectl delete deployment,svc,configmap,secret,hpa,pdb -n commerce -l app=catalog-service 2>/dev/null || true
+	@kubectl delete deployment,svc,secret,pvc -n commerce -l app=catalog-service-mariadb 2>/dev/null || true
 	@echo "$(GREEN)✓ Resources deleted$(NC)"
 
 # ============================================
@@ -124,11 +124,11 @@ k8s-clean: ## Delete all Kubernetes resources
 port-forward: ## Forward application port to localhost:8080
 	@echo "$(GREEN)Forwarding port 8080...$(NC)"
 	@echo "Access at: http://localhost:8080"
-	@kubectl port-forward svc/auth-service 8080:80 -n commerce
+	@kubectl port-forward svc/catalog-service 8080:80 -n commerce
 
 port-forward-db: ## Forward MariaDB port to localhost:3306
 	@echo "$(GREEN)Forwarding MariaDB port 3306...$(NC)"
-	@kubectl port-forward svc/auth-service-mariadb 3306:3306 -n commerce
+	@kubectl port-forward svc/catalog-service-mariadb 3306:3306 -n commerce
 
 # ============================================
 # Health Checks
@@ -159,7 +159,7 @@ db-logs: ## Show MariaDB logs
 	@docker-compose logs -f db
 
 db-shell: ## Connect to local MariaDB shell
-	@docker exec -it auth-mariadb mysql -uadmin -padmin1234 commerce-auth
+	@docker exec -it catalog-mariadb mysql -uadmin -padmin1234 commerce-catalog
 
 # ============================================
 # Quick Commands
