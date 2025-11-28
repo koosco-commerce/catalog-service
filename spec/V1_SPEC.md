@@ -407,7 +407,7 @@ com.koosco.catalogservice
 - ✅ Database schema (Flyway migration)
 - ✅ Domain entities (JPA entities)
 - ✅ Repository layer
-- ⏳ Service layer
+- ✅ Service layer
 - ⏳ Controller layer
 - ⏳ Authentication/Authorization
 - ⏳ API documentation (Swagger)
