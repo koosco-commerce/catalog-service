@@ -1,0 +1,24 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: catalog-service-pdb
+  namespace: commerce
+  labels:
+    app: catalog-service
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: catalog-service
+---
+# Alternative: use maxUnavailable instead
+# apiVersion: policy/v1
+# kind: PodDisruptionBudget
+# metadata:
+#   name: catalog-service-pdb
+#   namespace: commerce
+# spec:
+#   maxUnavailable: 1
+#   selector:
+#     matchLabels:
+#       app: catalog-service
