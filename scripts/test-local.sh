@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Auth Service 로컬 빌드 & 테스트 스크립트
+# Catalog Service 로컬 빌드 & 테스트 스크립트
 # 사용법: ./test-local.sh
 
 set -e
@@ -12,16 +12,16 @@ NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
-IMAGE_NAME="auth-service"
+IMAGE_NAME="catalog-service"
 IMAGE_TAG="latest"
-CONTAINER_NAME="auth-service-test"
+CONTAINER_NAME="catalog-service-test"
 
 # GitHub credentials (필수)
 GH_USER=${GH_USER:-""}
 GH_TOKEN=${GH_TOKEN:-""}
 
 echo -e "${GREEN}========================================${NC}"
-echo -e "${GREEN}Auth Service Local Build & Test${NC}"
+echo -e "${GREEN}Catalog Service Local Build & Test${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
 
@@ -72,7 +72,7 @@ echo -e "${GREEN}✓${NC} Database is ready"
 echo ""
 
 # 4. Run Application Container
-echo -e "${GREEN}[4/6]${NC} Starting auth-service container..."
+echo -e "${GREEN}[4/6]${NC} Starting catalog-service container..."
 
 # 기존 컨테이너 제거
 docker rm -f ${CONTAINER_NAME} 2>/dev/null || true
@@ -86,9 +86,9 @@ docker run -d \
   --network ${NETWORK_NAME} \
   -p 8080:8080 \
   -e SPRING_PROFILES_ACTIVE=local \
-  -e DB_HOST=auth-mariadb \
+  -e DB_HOST=catalog-mariadb \
   -e DB_PORT=3306 \
-  -e DB_NAME=commerce-auth \
+  -e DB_NAME=commerce-catalog \
   -e DB_USERNAME=admin \
   -e DB_PASSWORD=admin1234 \
   -e JWT_SECRET=mySecretKeyForJWTWhichShouldBeAtLeast256BitsLongToEnsureSecurityAndCompliance \
