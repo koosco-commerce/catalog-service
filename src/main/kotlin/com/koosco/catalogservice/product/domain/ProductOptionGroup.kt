@@ -39,11 +39,6 @@ class ProductOptionGroup(
         option.optionGroup = this
     }
 
-    fun removeOption(option: ProductOption) {
-        options.remove(option)
-        option.optionGroup = null
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -55,6 +50,24 @@ class ProductOptionGroup(
 
     override fun hashCode(): Int = id?.hashCode() ?: 0
 
-    override fun toString(): String =
-        "ProductOptionGroup(id=$id, name='$name', ordering=$ordering)"
+    companion object {
+        fun create(name: String, ordering: Int, optionSpecs: List<CreateOptionSpec>): ProductOptionGroup {
+            val optionGroup = ProductOptionGroup(
+                name = name,
+                ordering = ordering,
+            )
+
+            optionSpecs.forEach { spec ->
+                val option = ProductOption(
+                    name = spec.name,
+                    additionalPrice = spec.additionalPrice,
+                    ordering = spec.ordering,
+                )
+                optionGroup.addOption(option)
+                option.optionGroup = optionGroup
+            }
+
+            return optionGroup
+        }
+    }
 }

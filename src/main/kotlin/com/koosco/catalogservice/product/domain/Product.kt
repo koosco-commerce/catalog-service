@@ -46,14 +46,26 @@ class Product(
         updatedAt = LocalDateTime.now()
     }
 
-    fun addOptionGroup(optionGroup: ProductOptionGroup) {
-        optionGroups.add(optionGroup)
-        optionGroup.product = this
+    fun update(
+        name: String?,
+        description: String?,
+        price: Long?,
+        status: ProductStatus?,
+        categoryId: Long?,
+        thumbnailImageUrl: String?,
+        brand: String?,
+    ) {
+        name?.let { this.name = it }
+        description?.let { this.description = it }
+        price?.let { this.price = it }
+        status?.let { this.status = it }
+        categoryId?.let { this.categoryId = it }
+        thumbnailImageUrl?.let { this.thumbnailImageUrl = it }
+        brand?.let { this.brand = it }
     }
 
-    fun removeOptionGroup(optionGroup: ProductOptionGroup) {
-        optionGroups.remove(optionGroup)
-        optionGroup.product = null
+    fun delete() {
+        this.status = ProductStatus.DELETED
     }
 
     override fun equals(other: Any?): Boolean {
@@ -67,6 +79,40 @@ class Product(
 
     override fun hashCode(): Int = id?.hashCode() ?: 0
 
-    override fun toString(): String =
-        "Product(id=$id, name='$name', price=$price, status=$status, categoryId=$categoryId, brand=$brand)"
+    companion object {
+        fun create(
+            name: String,
+            description: String?,
+            price: Long,
+            status: ProductStatus,
+            categoryId: Long?,
+            thumbnailImageUrl: String?,
+            brand: String?,
+            optionGroupSpecs: List<OptionGroupCreateSpec>,
+        ): Product {
+            val product = Product(
+                name = name,
+                description = description,
+                price = price,
+                status = status,
+                categoryId = categoryId,
+                thumbnailImageUrl = thumbnailImageUrl,
+                brand = brand,
+            )
+
+            optionGroupSpecs.forEach { groupSpec ->
+                val optionGroup =
+                    ProductOptionGroup.create(
+                        groupSpec.name,
+                        groupSpec.ordering,
+                        groupSpec.options,
+                    )
+
+                product.optionGroups.add(optionGroup)
+                optionGroup.product = product
+            }
+
+            return product
+        }
+    }
 }

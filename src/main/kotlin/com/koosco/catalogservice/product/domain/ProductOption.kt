@@ -44,7 +44,4 @@ class ProductOption(
     }
 
     override fun hashCode(): Int = id?.hashCode() ?: 0
-
-    override fun toString(): String =
-        "ProductOption(id=$id, name='$name', additionalPrice=$additionalPrice, ordering=$ordering)"
 }
