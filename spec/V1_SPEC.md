@@ -1,5 +1,21 @@
 # Catalog Service - Version 1 Specification
 
+## Table of Contents
+
+1. [Service Role & Boundaries](#1-service-role--boundaries)
+2. [Domain Model](#2-domain-model)
+   - 2.1 [Aggregates](#21-aggregates)
+3. [Database Schema (MariaDB)](#3-database-schema-mariadb)
+4. [API Design (v1)](#4-api-design-v1)
+   - 4.1 [Category API](#41-category-api)
+   - 4.2 [Product API](#42-product-api)
+5. [Authentication & Authorization Policy](#5-authentication--authorization-policy)
+6. [Package Structure](#6-package-structure)
+7. [Future Extension Points](#7-future-extension-points)
+8. [Implementation Status](#8-implementation-status)
+
+---
+
 ## 1. Service Role & Boundaries
 
 ### Role
