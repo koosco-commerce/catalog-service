@@ -408,6 +408,6 @@ com.koosco.catalogservice
 - ✅ Domain entities (JPA entities)
 - ✅ Repository layer
 - ✅ Service layer
-- ⏳ Controller layer
+- ✅ Controller layer
 - ⏳ Authentication/Authorization
 - ⏳ API documentation (Swagger)
