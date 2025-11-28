@@ -1,6 +1,7 @@
 package com.koosco.catalogservice.category.api.dto
 
 import com.koosco.catalogservice.category.application.CategoryTreeNode
+import com.koosco.catalogservice.category.application.dto.*
 import com.koosco.catalogservice.category.domain.Category
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
@@ -20,6 +21,14 @@ data class CategoryResponse(
             depth = category.depth,
             ordering = category.ordering,
         )
+
+        fun from(categoryInfo: CategoryInfo): CategoryResponse = CategoryResponse(
+            id = categoryInfo.id,
+            name = categoryInfo.name,
+            parentId = categoryInfo.parentId,
+            depth = categoryInfo.depth,
+            ordering = categoryInfo.ordering,
+        )
     }
 }
 
@@ -36,6 +45,13 @@ data class CategoryTreeResponse(
             depth = node.depth,
             children = node.children.map { from(it) },
         )
+
+        fun from(treeInfo: CategoryTreeInfo): CategoryTreeResponse = CategoryTreeResponse(
+            id = treeInfo.id,
+            name = treeInfo.name,
+            depth = treeInfo.depth,
+            children = treeInfo.children.map { from(it) },
+        )
     }
 }
 
@@ -47,6 +63,12 @@ data class CategoryCreateRequest(
     val ordering: Int = 0,
 ) {
     fun toEntity(): Category = Category(
+        name = name,
+        parentId = parentId,
+        ordering = ordering,
+    )
+
+    fun toCommand(): CreateCategoryCommand = CreateCategoryCommand(
         name = name,
         parentId = parentId,
         ordering = ordering,

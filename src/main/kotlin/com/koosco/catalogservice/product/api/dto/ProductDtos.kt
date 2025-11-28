@@ -1,5 +1,6 @@
 package com.koosco.catalogservice.product.api.dto
 
+import com.koosco.catalogservice.product.application.dto.*
 import com.koosco.catalogservice.product.domain.Product
 import com.koosco.catalogservice.product.domain.ProductOption
 import com.koosco.catalogservice.product.domain.ProductOptionGroup
@@ -25,6 +26,15 @@ data class ProductListResponse(
             status = product.status,
             categoryId = product.categoryId,
             thumbnailImageUrl = product.thumbnailImageUrl,
+        )
+
+        fun from(productInfo: ProductInfo): ProductListResponse = ProductListResponse(
+            id = productInfo.id,
+            name = productInfo.name,
+            price = productInfo.price,
+            status = productInfo.status,
+            categoryId = productInfo.categoryId,
+            thumbnailImageUrl = productInfo.thumbnailImageUrl,
         )
     }
 }
@@ -52,6 +62,18 @@ data class ProductDetailResponse(
             brand = product.brand,
             optionGroups = product.optionGroups.map { ProductOptionGroupResponse.from(it) },
         )
+
+        fun from(productInfo: ProductInfo): ProductDetailResponse = ProductDetailResponse(
+            id = productInfo.id,
+            name = productInfo.name,
+            description = productInfo.description,
+            price = productInfo.price,
+            status = productInfo.status,
+            categoryId = productInfo.categoryId,
+            thumbnailImageUrl = productInfo.thumbnailImageUrl,
+            brand = productInfo.brand,
+            optionGroups = productInfo.optionGroups.map { ProductOptionGroupResponse.from(it) },
+        )
     }
 }
 
@@ -66,6 +88,12 @@ data class ProductOptionGroupResponse(
             name = group.name,
             options = group.options.map { ProductOptionResponse.from(it) },
         )
+
+        fun from(groupInfo: ProductOptionGroupInfo): ProductOptionGroupResponse = ProductOptionGroupResponse(
+            id = groupInfo.id,
+            name = groupInfo.name,
+            options = groupInfo.options.map { ProductOptionResponse.from(it) },
+        )
     }
 }
 
@@ -79,6 +107,12 @@ data class ProductOptionResponse(
             id = option.id!!,
             name = option.name,
             additionalPrice = option.additionalPrice,
+        )
+
+        fun from(optionInfo: ProductOptionInfo): ProductOptionResponse = ProductOptionResponse(
+            id = optionInfo.id,
+            name = optionInfo.name,
+            additionalPrice = optionInfo.additionalPrice,
         )
     }
 }
@@ -127,6 +161,17 @@ data class ProductCreateRequest(
 
         return product
     }
+
+    fun toCommand(): CreateProductCommand = CreateProductCommand(
+        name = name,
+        description = description,
+        price = price,
+        status = status,
+        categoryId = categoryId,
+        thumbnailImageUrl = thumbnailImageUrl,
+        brand = brand,
+        optionGroups = optionGroups.map { it.toCommand() },
+    )
 }
 
 data class ProductOptionGroupCreateRequest(
@@ -135,7 +180,13 @@ data class ProductOptionGroupCreateRequest(
     val ordering: Int = 0,
     @field:Valid
     val options: List<ProductOptionCreateRequest> = emptyList(),
-)
+) {
+    fun toCommand(): CreateProductOptionGroupCommand = CreateProductOptionGroupCommand(
+        name = name,
+        ordering = ordering,
+        options = options.map { it.toCommand() },
+    )
+}
 
 data class ProductOptionCreateRequest(
     @field:NotBlank(message = "Option name is required")
@@ -143,7 +194,13 @@ data class ProductOptionCreateRequest(
     @field:Min(value = 0, message = "Additional price must be non-negative")
     val additionalPrice: Long = 0,
     val ordering: Int = 0,
-)
+) {
+    fun toCommand(): CreateProductOptionCommand = CreateProductOptionCommand(
+        name = name,
+        additionalPrice = additionalPrice,
+        ordering = ordering,
+    )
+}
 
 data class ProductUpdateRequest(
     val name: String?,
@@ -154,4 +211,15 @@ data class ProductUpdateRequest(
     val categoryId: Long?,
     val thumbnailImageUrl: String?,
     val brand: String?,
-)
+) {
+    fun toCommand(productId: Long): UpdateProductCommand = UpdateProductCommand(
+        productId = productId,
+        name = name,
+        description = description,
+        price = price,
+        status = status,
+        categoryId = categoryId,
+        thumbnailImageUrl = thumbnailImageUrl,
+        brand = brand,
+    )
+}

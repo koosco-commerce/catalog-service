@@ -3,7 +3,8 @@ package com.koosco.catalogservice.category.api.controller
 import com.koosco.catalogservice.category.api.dto.CategoryCreateRequest
 import com.koosco.catalogservice.category.api.dto.CategoryResponse
 import com.koosco.catalogservice.category.api.dto.CategoryTreeResponse
-import com.koosco.catalogservice.category.application.CategoryService
+import com.koosco.catalogservice.category.application.dto.GetCategoryListCommand
+import com.koosco.catalogservice.category.application.usecase.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/catalog/categories")
 class CategoryController(
-    private val categoryService: CategoryService,
+    private val getCategoryListUseCase: GetCategoryListUseCase,
+    private val getCategoryTreeUseCase: GetCategoryTreeUseCase,
+    private val createCategoryUseCase: CreateCategoryUseCase,
 ) {
     @Operation(summary = "Get category list", description = "Get categories filtered by parent or root level")
     @ApiResponses(
@@ -30,8 +33,10 @@ class CategoryController(
     @GetMapping
     fun getCategories(
         @Parameter(description = "Parent category ID (null for root categories)") @RequestParam(required = false) parentId: Long?,
-    ): List<CategoryResponse> = categoryService.getCategories(parentId)
-        .map { CategoryResponse.from(it) }
+    ): List<CategoryResponse> {
+        val command = GetCategoryListCommand(parentId = parentId)
+        return getCategoryListUseCase.execute(command).map { CategoryResponse.from(it) }
+    }
 
     @Operation(summary = "Get category tree", description = "Get hierarchical category tree structure")
     @ApiResponses(
@@ -40,8 +45,9 @@ class CategoryController(
         ],
     )
     @GetMapping("/tree")
-    fun getCategoryTree(): List<CategoryTreeResponse> = categoryService.getCategoryTree()
-        .map { CategoryTreeResponse.from(it) }
+    fun getCategoryTree(): List<CategoryTreeResponse> {
+        return getCategoryTreeUseCase.execute().map { CategoryTreeResponse.from(it) }
+    }
 
     @Operation(
         summary = "Create category",
@@ -61,7 +67,8 @@ class CategoryController(
     fun createCategory(
         @Valid @RequestBody request: CategoryCreateRequest,
     ): CategoryResponse {
-        val category = categoryService.createCategory(request.toEntity())
-        return CategoryResponse.from(category)
+        val command = request.toCommand()
+        val categoryInfo = createCategoryUseCase.execute(command)
+        return CategoryResponse.from(categoryInfo)
     }
 }
