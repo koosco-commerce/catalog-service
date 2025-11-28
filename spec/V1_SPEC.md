@@ -410,4 +410,4 @@ com.koosco.catalogservice
 - ✅ Service layer
 - ✅ Controller layer
 - ✅ Authentication/Authorization
-- ⏳ API documentation (Swagger)
+- ✅ API documentation (Swagger)
