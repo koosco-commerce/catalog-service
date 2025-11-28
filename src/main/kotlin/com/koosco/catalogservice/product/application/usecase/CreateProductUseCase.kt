@@ -2,20 +2,33 @@ package com.koosco.catalogservice.product.application.usecase
 
 import com.koosco.catalogservice.product.application.dto.CreateProductCommand
 import com.koosco.catalogservice.product.application.dto.ProductInfo
+import com.koosco.catalogservice.product.domain.CreateOptionSpec
+import com.koosco.catalogservice.product.domain.OptionGroupCreateSpec
 import com.koosco.catalogservice.product.domain.Product
-import com.koosco.catalogservice.product.domain.ProductOption
-import com.koosco.catalogservice.product.domain.ProductOptionGroup
 import com.koosco.catalogservice.product.infra.persist.ProductRepository
-import com.koosco.common.annotation.UseCase
+import com.koosco.common.core.annotation.UseCase
 import org.springframework.transaction.annotation.Transactional
 
 @UseCase
-class CreateProductUseCase(
-    private val productRepository: ProductRepository,
-) {
+class CreateProductUseCase(private val productRepository: ProductRepository) {
+
     @Transactional
     fun execute(command: CreateProductCommand): ProductInfo {
-        val product = Product(
+        val optionSpec = command.optionGroups.map { group ->
+            OptionGroupCreateSpec(
+                name = group.name,
+                ordering = group.ordering,
+                options = group.options.map { option ->
+                    CreateOptionSpec(
+                        name = option.name,
+                        additionalPrice = option.additionalPrice,
+                        ordering = option.ordering,
+                    )
+                },
+            )
+        }
+
+        val product = Product.create(
             name = command.name,
             description = command.description,
             price = command.price,
@@ -23,29 +36,11 @@ class CreateProductUseCase(
             categoryId = command.categoryId,
             thumbnailImageUrl = command.thumbnailImageUrl,
             brand = command.brand,
+            optionSpec,
         )
 
-        command.optionGroups.forEach { groupCommand ->
-            val optionGroup = ProductOptionGroup(
-                name = groupCommand.name,
-                ordering = groupCommand.ordering,
-                product = product,
-            )
-
-            groupCommand.options.forEach { optionCommand ->
-                val option = ProductOption(
-                    name = optionCommand.name,
-                    additionalPrice = optionCommand.additionalPrice,
-                    ordering = optionCommand.ordering,
-                    optionGroup = optionGroup,
-                )
-                optionGroup.addOption(option)
-            }
-
-            product.addOptionGroup(optionGroup)
-        }
-
         val savedProduct = productRepository.save(product)
+
         return ProductInfo.from(savedProduct)
     }
 }

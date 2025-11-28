@@ -1,31 +1,28 @@
 package com.koosco.catalogservice.product.application.usecase
 
-import com.koosco.catalogservice.product.application.dto.ProductInfo
+import com.koosco.catalogservice.common.exception.CatalogErrorCode
 import com.koosco.catalogservice.product.application.dto.UpdateProductCommand
 import com.koosco.catalogservice.product.infra.persist.ProductRepository
-import com.koosco.common.annotation.UseCase
-import com.koosco.common.exception.ErrorCode
-import com.koosco.common.exception.ServiceException
+import com.koosco.common.core.annotation.UseCase
+import com.koosco.common.core.exception.NotFoundException
 import org.springframework.transaction.annotation.Transactional
 
 @UseCase
-class UpdateProductUseCase(
-    private val productRepository: ProductRepository,
-) {
+class UpdateProductUseCase(private val productRepository: ProductRepository) {
+
     @Transactional
-    fun execute(command: UpdateProductCommand): ProductInfo {
+    fun execute(command: UpdateProductCommand) {
         val product = productRepository.findById(command.productId)
-            .orElseThrow { ServiceException(ErrorCode.PRODUCT_NOT_FOUND) }
+            .orElseThrow { NotFoundException(CatalogErrorCode.PRODUCT_NOT_FOUND) }
 
-        command.name?.let { product.name = it }
-        command.description?.let { product.description = it }
-        command.price?.let { product.price = it }
-        command.status?.let { product.status = it }
-        command.categoryId?.let { product.categoryId = it }
-        command.thumbnailImageUrl?.let { product.thumbnailImageUrl = it }
-        command.brand?.let { product.brand = it }
-
-        val updatedProduct = productRepository.save(product)
-        return ProductInfo.from(updatedProduct)
+        product.update(
+            name = command.name,
+            description = command.description,
+            price = command.price,
+            status = command.status,
+            categoryId = command.categoryId,
+            thumbnailImageUrl = command.thumbnailImageUrl,
+            brand = command.brand,
+        )
     }
 }

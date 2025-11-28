@@ -2,18 +2,17 @@ package com.koosco.catalogservice.category.application.usecase
 
 import com.koosco.catalogservice.category.application.dto.CategoryInfo
 import com.koosco.catalogservice.category.application.dto.GetCategoryListCommand
-import com.koosco.catalogservice.category.infra.persist.CategoryRepository
-import com.koosco.common.annotation.UseCase
+import com.koosco.catalogservice.category.application.repository.CategoryRepository
+import com.koosco.common.core.annotation.UseCase
 import org.springframework.transaction.annotation.Transactional
 
 @UseCase
-class GetCategoryListUseCase(
-    private val categoryRepository: CategoryRepository,
-) {
+class GetCategoryListUseCase(private val categoryRepository: CategoryRepository) {
+
     @Transactional(readOnly = true)
     fun execute(command: GetCategoryListCommand): List<CategoryInfo> {
         val categories = if (command.parentId != null) {
-            categoryRepository.findByParentId(command.parentId)
+            categoryRepository.findByParentIdOrderByOrderingAsc(command.parentId)
         } else {
             categoryRepository.findByParentIdIsNull()
         }
