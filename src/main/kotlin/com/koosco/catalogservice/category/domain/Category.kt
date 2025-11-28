@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.domain
+package com.koosco.catalogservice.category.domain
 
 import jakarta.persistence.*
 import java.time.LocalDateTime

@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.domain
+package com.koosco.catalogservice.product.domain
 
 enum class ProductStatus {
     ACTIVE,

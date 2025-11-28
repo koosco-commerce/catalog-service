@@ -406,7 +406,7 @@ com.koosco.catalogservice
 ## Implementation Status
 - ✅ Database schema (Flyway migration)
 - ✅ Domain entities (JPA entities)
-- ⏳ Repository layer
+- ✅ Repository layer
 - ⏳ Service layer
 - ⏳ Controller layer
 - ⏳ Authentication/Authorization
