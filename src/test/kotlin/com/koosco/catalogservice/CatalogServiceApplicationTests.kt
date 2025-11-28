@@ -9,5 +9,4 @@ class CatalogServiceApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

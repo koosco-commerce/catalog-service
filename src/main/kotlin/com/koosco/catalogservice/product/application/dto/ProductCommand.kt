@@ -3,15 +3,9 @@ package com.koosco.catalogservice.product.application.dto
 import com.koosco.catalogservice.product.domain.ProductStatus
 import org.springframework.data.domain.Pageable
 
-data class GetProductListCommand(
-    val categoryId: Long?,
-    val keyword: String?,
-    val pageable: Pageable,
-)
+data class GetProductListCommand(val categoryId: Long?, val keyword: String?, val pageable: Pageable)
 
-data class GetProductDetailCommand(
-    val productId: Long,
-)
+data class GetProductDetailCommand(val productId: Long)
 
 data class CreateProductCommand(
     val name: String,
@@ -30,11 +24,7 @@ data class CreateProductOptionGroupCommand(
     val options: List<CreateProductOptionCommand>,
 )
 
-data class CreateProductOptionCommand(
-    val name: String,
-    val additionalPrice: Long = 0,
-    val ordering: Int = 0,
-)
+data class CreateProductOptionCommand(val name: String, val additionalPrice: Long = 0, val ordering: Int = 0)
 
 data class UpdateProductCommand(
     val productId: Long,
@@ -47,6 +37,4 @@ data class UpdateProductCommand(
     val brand: String?,
 )
 
-data class DeleteProductCommand(
-    val productId: Long,
-)
+data class DeleteProductCommand(val productId: Long)

@@ -47,12 +47,7 @@ data class ProductOptionGroupInfo(
     }
 }
 
-data class ProductOptionInfo(
-    val id: Long,
-    val name: String,
-    val additionalPrice: Long,
-    val ordering: Int,
-) {
+data class ProductOptionInfo(val id: Long, val name: String, val additionalPrice: Long, val ordering: Int) {
     companion object {
         fun from(option: ProductOption): ProductOptionInfo = ProductOptionInfo(
             id = option.id!!,

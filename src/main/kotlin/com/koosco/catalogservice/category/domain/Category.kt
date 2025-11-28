@@ -44,6 +44,13 @@ class Category(
 
     override fun hashCode(): Int = id?.hashCode() ?: 0
 
-    override fun toString(): String =
-        "Category(id=$id, name='$name', parentId=$parentId, depth=$depth, ordering=$ordering)"
+    companion object {
+
+        fun of(name: String, parentId: Long? = null, depth: Int = 0, ordering: Int = 0): Category = Category(
+            name = name,
+            parentId = parentId,
+            depth = depth,
+            ordering = ordering,
+        )
+    }
 }
