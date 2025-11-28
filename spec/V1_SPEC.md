@@ -409,5 +409,5 @@ com.koosco.catalogservice
 - ✅ Repository layer
 - ✅ Service layer
 - ✅ Controller layer
-- ⏳ Authentication/Authorization
+- ✅ Authentication/Authorization
 - ⏳ API documentation (Swagger)
