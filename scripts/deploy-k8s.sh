@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Auth Service 배포 스크립트
+# Catalog Service 배포 스크립트
 # 사용법: ./deploy-k8s.sh [environment]
 # 예시: ./deploy-k8s.sh local  (Docker Compose)
 #       ./deploy-k8s.sh dev    (로컬 k3d 클러스터)
@@ -18,7 +18,7 @@ PROJECT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 K8S_DIR="${PROJECT_DIR}/k8s"
 
 ENVIRONMENT=${1:-local}
-IMAGE_NAME="auth-service"
+IMAGE_NAME="catalog-service"
 IMAGE_TAG=${2:-latest}
 NAMESPACE="commerce"
 
@@ -32,7 +32,7 @@ EC2_USER=${EC2_USER:-"ubuntu"}
 EC2_KEY=${EC2_KEY:-"~/.ssh/id_rsa"}
 
 echo -e "${GREEN}========================================${NC}"
-echo -e "${GREEN}Auth Service Deployment${NC}"
+echo -e "${GREEN}Catalog Service Deployment${NC}"
 echo -e "${GREEN}Environment: ${ENVIRONMENT}${NC}"
 echo -e "${GREEN}Image: ${IMAGE_NAME}:${IMAGE_TAG}${NC}"
 echo -e "${GREEN}========================================${NC}"
@@ -289,7 +289,7 @@ echo ""
 echo -e "${GREEN}[2/7]${NC} Deploying MariaDB..."
 kubectl apply -f ${K8S_DIR}/mariadb-deployment.yaml
 echo "Waiting for MariaDB to be ready..."
-kubectl wait --for=condition=ready pod -l app=auth-service-mariadb -n ${NAMESPACE} --timeout=300s
+kubectl wait --for=condition=ready pod -l app=catalog-service-mariadb -n ${NAMESPACE} --timeout=300s
 echo -e "${GREEN}✓${NC} MariaDB is ready"
 echo ""
 
@@ -310,7 +310,7 @@ echo -e "${GREEN}[5/7]${NC} Deploying application..."
 kubectl apply -f ${K8S_DIR}/deployment.yaml
 kubectl apply -f ${K8S_DIR}/service.yaml
 echo "Waiting for deployment to be ready..."
-kubectl rollout status deployment/auth-service -n ${NAMESPACE}
+kubectl rollout status deployment/catalog-service -n ${NAMESPACE}
 echo -e "${GREEN}✓${NC} Application deployed"
 echo ""
 
@@ -327,13 +327,13 @@ echo ""
 
 # Pods
 echo "Pods:"
-kubectl get pods -n ${NAMESPACE} -l app=auth-service
+kubectl get pods -n ${NAMESPACE} -l app=catalog-service
 
 echo ""
 
 # Services
 echo "Services:"
-kubectl get svc -n ${NAMESPACE} -l app=auth-service
+kubectl get svc -n ${NAMESPACE} -l app=catalog-service
 
 echo ""
 
@@ -345,7 +345,7 @@ echo ""
 
 # Health check
 echo "Checking application health..."
-POD_NAME=$(kubectl get pod -n ${NAMESPACE} -l app=auth-service -o jsonpath='{.items[0].metadata.name}')
+POD_NAME=$(kubectl get pod -n ${NAMESPACE} -l app=catalog-service -o jsonpath='{.items[0].metadata.name}')
 
 if [ -n "$POD_NAME" ]; then
     echo -n "Liveness: "
@@ -371,12 +371,12 @@ echo -e "${GREEN}Deployment completed successfully!${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
 echo "Useful commands:"
-echo "  - View logs: kubectl logs -f deployment/auth-service -n ${NAMESPACE}"
-echo "  - Port forward: kubectl port-forward svc/auth-service 8080:80 -n ${NAMESPACE}"
+echo "  - View logs: kubectl logs -f deployment/catalog-service -n ${NAMESPACE}"
+echo "  - Port forward: kubectl port-forward svc/catalog-service 8080:80 -n ${NAMESPACE}"
 echo "  - Get pods: kubectl get pods -n ${NAMESPACE}"
 echo "  - Describe pod: kubectl describe pod <pod-name> -n ${NAMESPACE}"
 echo ""
 echo "Access application:"
-echo "  - kubectl port-forward svc/auth-service 8080:80 -n ${NAMESPACE}"
+echo "  - kubectl port-forward svc/catalog-service 8080:80 -n ${NAMESPACE}"
 echo "  - Then open: http://localhost:8080/swagger-ui.html"
 echo ""
