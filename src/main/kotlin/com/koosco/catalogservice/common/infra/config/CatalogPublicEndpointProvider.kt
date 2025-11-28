@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.infra.config
+package com.koosco.catalogservice.common.infra.config
 
 import com.koosco.commonsecurity.config.PublicEndpointProvider
 import org.springframework.stereotype.Component

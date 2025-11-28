@@ -1,7 +1,6 @@
 package com.koosco.catalogservice.product.api.dto
 
 import com.koosco.catalogservice.product.application.dto.*
-import com.koosco.catalogservice.product.domain.Product
 import com.koosco.catalogservice.product.domain.ProductOption
 import com.koosco.catalogservice.product.domain.ProductOptionGroup
 import com.koosco.catalogservice.product.domain.ProductStatus
@@ -19,15 +18,6 @@ data class ProductListResponse(
     val thumbnailImageUrl: String?,
 ) {
     companion object {
-        fun from(product: Product): ProductListResponse = ProductListResponse(
-            id = product.id!!,
-            name = product.name,
-            price = product.price,
-            status = product.status,
-            categoryId = product.categoryId,
-            thumbnailImageUrl = product.thumbnailImageUrl,
-        )
-
         fun from(productInfo: ProductInfo): ProductListResponse = ProductListResponse(
             id = productInfo.id,
             name = productInfo.name,
@@ -51,18 +41,6 @@ data class ProductDetailResponse(
     val optionGroups: List<ProductOptionGroupResponse>,
 ) {
     companion object {
-        fun from(product: Product): ProductDetailResponse = ProductDetailResponse(
-            id = product.id!!,
-            name = product.name,
-            description = product.description,
-            price = product.price,
-            status = product.status,
-            categoryId = product.categoryId,
-            thumbnailImageUrl = product.thumbnailImageUrl,
-            brand = product.brand,
-            optionGroups = product.optionGroups.map { ProductOptionGroupResponse.from(it) },
-        )
-
         fun from(productInfo: ProductInfo): ProductDetailResponse = ProductDetailResponse(
             id = productInfo.id,
             name = productInfo.name,
@@ -77,11 +55,7 @@ data class ProductDetailResponse(
     }
 }
 
-data class ProductOptionGroupResponse(
-    val id: Long,
-    val name: String,
-    val options: List<ProductOptionResponse>,
-) {
+data class ProductOptionGroupResponse(val id: Long, val name: String, val options: List<ProductOptionResponse>) {
     companion object {
         fun from(group: ProductOptionGroup): ProductOptionGroupResponse = ProductOptionGroupResponse(
             id = group.id!!,
@@ -97,11 +71,7 @@ data class ProductOptionGroupResponse(
     }
 }
 
-data class ProductOptionResponse(
-    val id: Long,
-    val name: String,
-    val additionalPrice: Long,
-) {
+data class ProductOptionResponse(val id: Long, val name: String, val additionalPrice: Long) {
     companion object {
         fun from(option: ProductOption): ProductOptionResponse = ProductOptionResponse(
             id = option.id!!,
@@ -131,36 +101,6 @@ data class ProductCreateRequest(
     @field:Valid
     val optionGroups: List<ProductOptionGroupCreateRequest> = emptyList(),
 ) {
-    fun toEntity(): Product {
-        val product = Product(
-            name = name,
-            description = description,
-            price = price,
-            status = status,
-            categoryId = categoryId,
-            thumbnailImageUrl = thumbnailImageUrl,
-            brand = brand,
-        )
-
-        optionGroups.forEach { groupRequest ->
-            val group = ProductOptionGroup(
-                name = groupRequest.name,
-                ordering = groupRequest.ordering,
-            )
-            product.addOptionGroup(group)
-
-            groupRequest.options.forEach { optionRequest ->
-                val option = ProductOption(
-                    name = optionRequest.name,
-                    additionalPrice = optionRequest.additionalPrice,
-                    ordering = optionRequest.ordering,
-                )
-                group.addOption(option)
-            }
-        }
-
-        return product
-    }
 
     fun toCommand(): CreateProductCommand = CreateProductCommand(
         name = name,
