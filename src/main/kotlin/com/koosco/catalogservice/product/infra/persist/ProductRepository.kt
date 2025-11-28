@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.product.infra
+package com.koosco.catalogservice.product.infra.persist
 
 import com.koosco.catalogservice.product.domain.Product
 import com.koosco.catalogservice.product.domain.ProductStatus

@@ -1,7 +1,7 @@
 package com.koosco.catalogservice.category.application
 
 import com.koosco.catalogservice.category.domain.Category
-import com.koosco.catalogservice.category.infra.CategoryRepository
+import com.koosco.catalogservice.category.infra.persist.CategoryRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

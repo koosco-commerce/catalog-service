@@ -19,22 +19,18 @@
    - 6.1 [Remove Custom Security Configuration](#61-remove-custom-security-configuration)
    - 6.2 [Remove Custom Exception Handler](#62-remove-custom-exception-handler)
    - 6.3 [Add Public Endpoint Provider](#63-add-public-endpoint-provider)
-7. [Testing Strategy](#7-testing-strategy)
-   - 7.1 [UseCase Unit Tests](#71-usecase-unit-tests)
-   - 7.2 [Integration Tests](#72-integration-tests)
-   - 7.3 [API Contract Tests](#73-api-contract-tests)
-8. [Benefits of V2 Architecture](#8-benefits-of-v2-architecture)
-   - 8.1 [Maintainability](#81-maintainability)
-   - 8.2 [Consistency](#82-consistency)
-   - 8.3 [Flexibility](#83-flexibility)
-   - 8.4 [Performance](#84-performance)
-9. [Migration Checklist](#9-migration-checklist)
-10. [Implementation Status](#10-implementation-status)
-11. [Backward Compatibility](#11-backward-compatibility)
-12. [Rollback Strategy](#12-rollback-strategy)
-13. [Documentation Updates](#13-documentation-updates)
-14. [Appendix A: Example UseCase Implementation](#appendix-a-example-usecase-implementation)
-15. [Appendix B: DTO Mapping Examples](#appendix-b-dto-mapping-examples)
+7. [Benefits of V2 Architecture](#7-benefits-of-v2-architecture)
+   - 7.1 [Maintainability](#71-maintainability)
+   - 7.2 [Consistency](#72-consistency)
+   - 7.3 [Flexibility](#73-flexibility)
+   - 7.4 [Performance](#74-performance)
+8. [Migration Checklist](#8-migration-checklist)
+9. [Implementation Status](#9-implementation-status)
+10. [Backward Compatibility](#10-backward-compatibility)
+11. [Rollback Strategy](#11-rollback-strategy)
+12. [Documentation Updates](#12-documentation-updates)
+13. [Appendix A: Example UseCase Implementation](#appendix-a-example-usecase-implementation)
+14. [Appendix B: DTO Mapping Examples](#appendix-b-dto-mapping-examples)
 
 ---
 
@@ -363,12 +359,6 @@ com.koosco.catalogservice
 - Add DTO conversion logic (API DTO ↔ Application DTO)
 - Maintain API contract (no breaking changes)
 
-### Phase 7: Testing & Validation
-- Unit tests for UseCases
-- Integration tests for complete flows
-- Verify all endpoints still work correctly
-- Performance testing
-
 ---
 
 ## 5. Detailed Implementation Guidelines
@@ -508,49 +498,31 @@ class CreateProductUseCase(
 
 ---
 
-## 7. Testing Strategy
+## 7. Benefits of V2 Architecture
 
-### 7.1 UseCase Unit Tests
-- Test UseCase in isolation with mocked dependencies
-- Verify business logic correctness
-- Test exception handling
-
-### 7.2 Integration Tests
-- Test complete flow from controller to database
-- Verify DTO conversions
-- Test security rules
-
-### 7.3 API Contract Tests
-- Ensure no breaking changes in API responses
-- Verify backward compatibility
-
----
-
-## 8. Benefits of V2 Architecture
-
-### 8.1 Maintainability
+### 7.1 Maintainability
 - **Clear Separation**: API, Application, Domain, Infrastructure layers
 - **Single Responsibility**: One UseCase per endpoint
 - **Testability**: Easy to unit test UseCases in isolation
 
-### 8.2 Consistency
+### 7.2 Consistency
 - **Common Modules**: Shared security and error handling across services
 - **Standardization**: Consistent patterns across microservices
 - **Reduced Duplication**: Reuse common functionality
 
-### 8.3 Flexibility
+### 7.3 Flexibility
 - **Easy Extension**: Add new endpoints by adding UseCases
 - **Service Reusability**: Domain services can be used by multiple UseCases
 - **Clean Contracts**: Application DTOs separate from API contracts
 
-### 8.4 Performance
+### 7.4 Performance
 - **Focused Logic**: UseCases contain only necessary logic
 - **Efficient Queries**: Repository methods optimized per UseCase
 - **Transaction Boundaries**: Clear transaction management in UseCases
 
 ---
 
-## 9. Migration Checklist
+## 8. Migration Checklist
 
 ### Product Module
 - [ ] Create application/dto package with Command and Info DTOs
@@ -564,7 +536,6 @@ class CreateProductUseCase(
 - [ ] Create infra/persist package and move ProductRepository
 - [ ] Update ProductController to use UseCases
 - [ ] Add DTO conversion logic in controller
-- [ ] Update unit and integration tests
 
 ### Category Module
 - [ ] Create application/dto package with Command and Info DTOs
@@ -576,7 +547,6 @@ class CreateProductUseCase(
 - [ ] Create infra/persist package and move CategoryRepository
 - [ ] Update CategoryController to use UseCases
 - [ ] Add DTO conversion logic in controller
-- [ ] Update unit and integration tests
 
 ### Infrastructure
 - [ ] Implement CatalogPublicEndpointProvider
@@ -585,29 +555,20 @@ class CreateProductUseCase(
 - [ ] Verify common-core and common-security integration
 - [ ] Update OpenApiConfig if needed
 
-### Testing & Validation
-- [ ] Run all unit tests
-- [ ] Run all integration tests
-- [ ] Manual API testing
-- [ ] Performance testing
-- [ ] Security testing
-- [ ] Update API documentation
-
 ---
 
-## 10. Implementation Status
+## 9. Implementation Status
 
-- ⏳ Phase 1: Dependency Updates
-- ⏳ Phase 2: Infrastructure Layer
+- ✅ Phase 1: Dependency Updates
+- ✅ Phase 2: Infrastructure Layer
 - ⏳ Phase 3: Application Layer - DTOs
 - ⏳ Phase 4: Application Layer - UseCases
 - ⏳ Phase 5: Application Layer - Services
 - ⏳ Phase 6: Controller Refactoring
-- ⏳ Phase 7: Testing & Validation
 
 ---
 
-## 11. Backward Compatibility
+## 10. Backward Compatibility
 
 ### API Contract
 - ✅ All existing API endpoints remain unchanged
@@ -627,7 +588,7 @@ class CreateProductUseCase(
 
 ---
 
-## 12. Rollback Strategy
+## 11. Rollback Strategy
 
 ### If Issues Arise
 1. **Code Rollback**: Revert to V1 commit using git
@@ -643,7 +604,7 @@ class CreateProductUseCase(
 
 ---
 
-## 13. Documentation Updates
+## 12. Documentation Updates
 
 ### Code Documentation
 - [ ] Add JavaDoc/KDoc to all UseCases
@@ -663,7 +624,7 @@ class CreateProductUseCase(
 
 ---
 
-## Appendix A: Example UseCase Implementation
+## 13. Appendix A: Example UseCase Implementation
 
 ### Complete Example: CreateProductUseCase
 
@@ -766,7 +727,7 @@ class ProductController(
 
 ---
 
-## Appendix B: DTO Mapping Examples
+## 14. Appendix B: DTO Mapping Examples
 
 ### API DTO → Application Command
 

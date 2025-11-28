@@ -2,7 +2,7 @@ package com.koosco.catalogservice.product.application
 
 import com.koosco.catalogservice.product.domain.Product
 import com.koosco.catalogservice.product.domain.ProductStatus
-import com.koosco.catalogservice.product.infra.ProductRepository
+import com.koosco.catalogservice.product.infra.persist.ProductRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull

@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.category.infra
+package com.koosco.catalogservice.category.infra.persist
 
 import com.koosco.catalogservice.category.domain.Category
 import org.springframework.data.jpa.repository.JpaRepository
