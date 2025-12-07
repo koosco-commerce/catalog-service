@@ -2,10 +2,10 @@ package com.koosco.catalogservice.product.application.usecase
 
 import com.koosco.catalogservice.product.application.dto.CreateProductCommand
 import com.koosco.catalogservice.product.application.dto.ProductInfo
+import com.koosco.catalogservice.product.application.repository.ProductRepository
 import com.koosco.catalogservice.product.domain.CreateOptionSpec
 import com.koosco.catalogservice.product.domain.OptionGroupCreateSpec
 import com.koosco.catalogservice.product.domain.Product
-import com.koosco.catalogservice.product.infra.persist.ProductRepository
 import com.koosco.common.core.annotation.UseCase
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 class CreateProductUseCase(private val productRepository: ProductRepository) {
 
     @Transactional
-    fun execute(command: CreateProductCommand): ProductInfo {
+    fun create(command: CreateProductCommand): ProductInfo {
         val optionSpec = command.optionGroups.map { group ->
             OptionGroupCreateSpec(
                 name = group.name,

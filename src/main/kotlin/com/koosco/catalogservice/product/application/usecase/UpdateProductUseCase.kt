@@ -2,7 +2,7 @@ package com.koosco.catalogservice.product.application.usecase
 
 import com.koosco.catalogservice.common.exception.CatalogErrorCode
 import com.koosco.catalogservice.product.application.dto.UpdateProductCommand
-import com.koosco.catalogservice.product.infra.persist.ProductRepository
+import com.koosco.catalogservice.product.application.repository.ProductRepository
 import com.koosco.common.core.annotation.UseCase
 import com.koosco.common.core.exception.NotFoundException
 import org.springframework.transaction.annotation.Transactional
@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional
 class UpdateProductUseCase(private val productRepository: ProductRepository) {
 
     @Transactional
-    fun execute(command: UpdateProductCommand) {
-        val product = productRepository.findById(command.productId)
-            .orElseThrow { NotFoundException(CatalogErrorCode.PRODUCT_NOT_FOUND) }
+    fun update(command: UpdateProductCommand) {
+        val product = productRepository.findOrNull(command.productId)
+            ?: throw NotFoundException(CatalogErrorCode.PRODUCT_NOT_FOUND)
 
         product.update(
             name = command.name,
