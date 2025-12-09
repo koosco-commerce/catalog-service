@@ -29,6 +29,7 @@ management:
 kafka:
   topics:
     product-created: koosco.commerce.product.created
+    sku-created: koosco.commerce.sku.created
 
 springdoc:
   swagger-ui:
