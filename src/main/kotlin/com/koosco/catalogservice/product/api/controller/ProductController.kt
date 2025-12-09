@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Product", description = "Product management APIs")
@@ -29,14 +28,12 @@ class ProductController(
     private val updateProductUseCase: UpdateProductUseCase,
     private val deleteProductUseCase: DeleteProductUseCase,
 ) {
-    @Operation(summary = "Get product list", description = "Get paginated product list with optional filtering")
+    @Operation(summary = "상품 리스트를 조회합니다.", description = "필터링 조건에 따라 상품을 페이징처리하여 조회합니다.")
     @GetMapping
     fun getProducts(
-        @Parameter(description = "Filter by category ID") @RequestParam(required = false) categoryId: Long?,
-        @Parameter(description = "Search keyword for name/description") @RequestParam(required = false) keyword:
-        String?,
-        @Parameter(description = "Pagination parameters (page, size, sort)") @PageableDefault(size = 20) pageable:
-        Pageable,
+        @Parameter(description = "카테고리 ID") @RequestParam(required = false) categoryId: Long?,
+        @Parameter(description = "이름 또는 상품 설명") @RequestParam(required = false) keyword: String?,
+        @Parameter(description = "페이징 파라미터 (page, size, sort)") @PageableDefault(size = 20) pageable: Pageable,
     ): ApiResponse<Page<ProductListResponse>> {
         val command = GetProductListCommand(
             categoryId = categoryId,
@@ -47,7 +44,7 @@ class ProductController(
         return ApiResponse.success(getProductListUseCase.execute(command).map { ProductListResponse.from(it) })
     }
 
-    @Operation(summary = "Get product detail", description = "Get detailed product information including option groups")
+    @Operation(summary = "상품 상세를 조회합니다.", description = "옵션을 포함하여 상품을 조회합니다.")
     @GetMapping("/{productId}")
     fun getProduct(
         @Parameter(description = "Product ID") @PathVariable productId: Long,
@@ -59,49 +56,42 @@ class ProductController(
     }
 
     @Operation(
-        summary = "Create product",
-        description = "Create a new product with option groups (Admin only)",
+        summary = "새로운 상품을 추가합니다.",
+        description = "상품 옵션과 함께 상품을 생성합니다. 판매자만 등록이 가능합니다.",
         security = [SecurityRequirement(name = "bearerAuth")],
     )
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     fun createProduct(@Valid @RequestBody request: ProductCreateRequest): ApiResponse<ProductDetailResponse> {
-        val command = request.toCommand()
-        val productInfo = createProductUseCase.execute(command)
+        val productInfo = createProductUseCase.create(request.toCommand())
 
         return ApiResponse.success(ProductDetailResponse.from(productInfo))
     }
 
     @Operation(
-        summary = "Update product",
-        description = "Update product information (Admin only)",
+        summary = "상품 정보를 업데이트합니다.",
+        description = "상품 정보를 업데이트합니다. 판매자만 수정이 가능합니다.",
         security = [SecurityRequirement(name = "bearerAuth")],
     )
     @PutMapping("/{productId}")
-    @PreAuthorize("hasRole('ADMIN')")
     fun updateProduct(
         @Parameter(description = "Product ID") @PathVariable productId: Long,
         @Valid @RequestBody request: ProductUpdateRequest,
     ): ApiResponse<Any> {
-        val command = request.toCommand(productId)
-        updateProductUseCase.execute(command)
+        updateProductUseCase.update(request.toCommand(productId))
 
         return ApiResponse.success()
     }
 
     @Operation(
-        summary = "Delete product",
-        description = "Soft delete product by setting status to DELETED (Admin only)",
+        summary = "상품을 삭제합니다.",
+        description = "상품을 삭제합니다. 판매자만 삭제가 가능합니다.",
         security = [SecurityRequirement(name = "bearerAuth")],
     )
     @DeleteMapping("/{productId}")
-    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteProduct(@Parameter(description = "Product ID") @PathVariable productId: Long): ApiResponse<Any> {
-        val command = DeleteProductCommand(productId = productId)
-
-        deleteProductUseCase.execute(command)
+        deleteProductUseCase.delete(DeleteProductCommand(productId = productId))
 
         return ApiResponse.success()
     }

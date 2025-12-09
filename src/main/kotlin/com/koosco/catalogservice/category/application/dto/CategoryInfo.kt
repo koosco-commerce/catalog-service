@@ -7,7 +7,7 @@ data class CategoryInfo(val id: Long, val name: String, val parentId: Long?, val
         fun from(category: Category): CategoryInfo = CategoryInfo(
             id = category.id!!,
             name = category.name,
-            parentId = category.parentId,
+            parentId = category.parent?.id,
             depth = category.depth,
             ordering = category.ordering,
         )

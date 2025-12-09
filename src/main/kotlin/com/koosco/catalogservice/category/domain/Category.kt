@@ -13,8 +13,15 @@ class Category(
     @Column(nullable = false, length = 100)
     var name: String,
 
-    @Column(name = "parent_id")
-    var parentId: Long? = null,
+    @Column(name = "code", nullable = false, unique = true, length = 50)
+    var code: String,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    var parent: Category? = null,
+
+    @OneToMany(mappedBy = "parent")
+    val children: MutableList<Category> = mutableListOf(),
 
     @Column(nullable = false)
     var depth: Int = 0,
@@ -46,11 +53,17 @@ class Category(
 
     companion object {
 
-        fun of(name: String, parentId: Long? = null, depth: Int = 0, ordering: Int = 0): Category = Category(
-            name = name,
-            parentId = parentId,
-            depth = depth,
-            ordering = ordering,
-        )
+        fun of(name: String, parent: Category? = null, ordering: Int = 0): Category {
+            val code = CategoryCodeGenerator.generate(name)
+            val depth = parent?.depth?.plus(1) ?: 0
+
+            return Category(
+                name = name,
+                code = code,
+                parent = parent,
+                depth = depth,
+                ordering = ordering,
+            )
+        }
     }
 }

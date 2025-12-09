@@ -17,6 +17,9 @@ class ProductOption(
     @Column(nullable = false, length = 100)
     var name: String,
 
+    /**
+     * 옵션 선택 시 추가되는 금액
+     */
     @Column(name = "additional_price", nullable = false)
     var additionalPrice: Long = 0,
 

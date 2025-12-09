@@ -15,11 +15,14 @@ class CategoryRepositoryImpl(private val jpaCategoryRepository: JpaCategoryRepos
     override fun findByParentIdOrderByOrderingAsc(parentId: Long?): List<Category> =
         jpaCategoryRepository.findByParentIdOrderByOrderingAsc(parentId)
 
-    override fun findByParentIdIsNull(): List<Category> = jpaCategoryRepository.findByParentIdIsNull()
+    override fun findByParentIsNull(): List<Category> = jpaCategoryRepository.findByParentIsNull()
 
     override fun findByDepthOrderByOrderingAsc(depth: Int): List<Category> =
         jpaCategoryRepository.findByDepthOrderByOrderingAsc(depth)
 
     override fun findAllByOrderByDepthAscOrderingAsc(): List<Category> =
         jpaCategoryRepository.findAllByOrderByDepthAscOrderingAsc()
+
+    override fun existsByNameAndParent(name: String, parent: Category?): Boolean =
+        jpaCategoryRepository.existsByNameAndParent(name, parent)
 }

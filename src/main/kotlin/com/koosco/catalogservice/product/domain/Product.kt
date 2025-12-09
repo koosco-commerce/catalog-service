@@ -10,12 +10,18 @@ class Product(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
+    @Column(name = "product_code", nullable = false, unique = true, length = 50)
+    val productCode: String,
+
     @Column(nullable = false)
     var name: String,
 
     @Column(columnDefinition = "TEXT")
     var description: String? = null,
 
+    /**
+     * 상품 상세 페이지에 노출되는 기본 가격
+     */
     @Column(nullable = false)
     var price: Long,
 
@@ -32,14 +38,17 @@ class Product(
     @Column(length = 100)
     var brand: String? = null,
 
+    @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val skus: MutableList<ProductSku> = mutableListOf(),
+
+    @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val optionGroups: MutableList<ProductOptionGroup> = mutableListOf(),
+
     @Column(name = "created_at", nullable = false, updatable = false)
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(name = "updated_at", nullable = false)
     var updatedAt: LocalDateTime = LocalDateTime.now(),
-
-    @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val optionGroups: MutableList<ProductOptionGroup> = mutableListOf(),
 ) {
     @PreUpdate
     fun preUpdate() {
@@ -79,6 +88,11 @@ class Product(
 
     override fun hashCode(): Int = id?.hashCode() ?: 0
 
+    fun addSkus(skus: List<ProductSku>) {
+        this.skus.addAll(skus)
+        skus.forEach { it.product = this }
+    }
+
     companion object {
         fun create(
             name: String,
@@ -86,11 +100,15 @@ class Product(
             price: Long,
             status: ProductStatus,
             categoryId: Long?,
+            categoryCode: String?,
             thumbnailImageUrl: String?,
             brand: String?,
             optionGroupSpecs: List<OptionGroupCreateSpec>,
         ): Product {
+            val productCode = generate(categoryCode)
+
             val product = Product(
+                productCode = productCode,
                 name = name,
                 description = description,
                 price = price,
@@ -100,6 +118,7 @@ class Product(
                 brand = brand,
             )
 
+            // 옵션 그룹 생성
             optionGroupSpecs.forEach { groupSpec ->
                 val optionGroup =
                     ProductOptionGroup.create(
@@ -113,6 +132,16 @@ class Product(
             }
 
             return product
+        }
+
+        fun generate(categoryCode: String?): String {
+            // Category code에서 prefix 추출 (예: "electronics" -> "ELEC")
+            val prefix = categoryCode?.uppercase()?.take(4) ?: "PRD"
+
+            val date = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd"))
+            val shortId = java.util.UUID.randomUUID().toString().substring(0, 4).uppercase()
+
+            return "$prefix-$date-$shortId"
         }
     }
 }

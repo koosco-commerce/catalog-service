@@ -18,7 +18,7 @@ class CategoryTreeBuilder {
         )
 
         val nodeMap = categories
-            .map { c -> TreeNode(c.id!!, c.name, c.depth, c.parentId) }
+            .map { c -> TreeNode(c.id!!, c.name, c.depth, c.parent?.id) }
             .associateBy { it.id }
 
         nodeMap.values.forEach { node ->

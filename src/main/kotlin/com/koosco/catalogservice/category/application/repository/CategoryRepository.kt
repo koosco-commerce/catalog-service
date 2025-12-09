@@ -10,9 +10,11 @@ interface CategoryRepository {
 
     fun findByParentIdOrderByOrderingAsc(parentId: Long?): List<Category>
 
-    fun findByParentIdIsNull(): List<Category>
+    fun findByParentIsNull(): List<Category>
 
     fun findByDepthOrderByOrderingAsc(depth: Int): List<Category>
 
     fun findAllByOrderByDepthAscOrderingAsc(): List<Category>
+
+    fun existsByNameAndParent(name: String, parent: Category?): Boolean
 }
