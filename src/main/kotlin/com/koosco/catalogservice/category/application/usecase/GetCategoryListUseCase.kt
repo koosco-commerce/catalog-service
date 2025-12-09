@@ -14,7 +14,7 @@ class GetCategoryListUseCase(private val categoryRepository: CategoryRepository)
         val categories = if (command.parentId != null) {
             categoryRepository.findByParentIdOrderByOrderingAsc(command.parentId)
         } else {
-            categoryRepository.findByParentIdIsNull()
+            categoryRepository.findByParentIsNull()
         }
 
         return categories.map { CategoryInfo.from(it) }
