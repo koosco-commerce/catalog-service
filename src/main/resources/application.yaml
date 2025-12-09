@@ -26,6 +26,10 @@ management:
     readinessState:
       enabled: true
 
+kafka:
+  topics:
+    product-created: koosco.commerce.product.created
+
 springdoc:
   swagger-ui:
     enabled: ${SWAGGER_UI_ENABLED:true}
