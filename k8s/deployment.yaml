@@ -76,6 +76,11 @@ spec:
                 configMapKeyRef:
                   name: catalog-service-config
                   key: DB_USERNAME
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: catalog-service-config
+                  key: SPRING_KAFKA_BOOTSTRAP_SERVERS
             # Import secrets
             - name: DB_PASSWORD
               valueFrom:
