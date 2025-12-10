@@ -1,6 +1,7 @@
 kafka:
   topics:
     product-created: koosco.commerce.dev.product.created
+    sku-created: koosco.commerce.dev.sku.created
 
 logging:
   level:

@@ -4,3 +4,4 @@ server:
 kafka:
   topics:
     product-created: koosco.commerce.local.product.created
+    sku-created: koosco.commerce.local.sku.created
