@@ -6,8 +6,41 @@ spring:
   web:
     resources:
       add-mappings: false
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
   jpa:
     open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+        show_sql: false
+        format_sql: false
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+  datasource:
+    url: jdbc:mariadb://${DB_HOST:localhost}:${DB_PORT:3304}/${DB_NAME:commerce-catalog}
+    username: ${DB_USERNAME:admin}
+    password: ${DB_PASSWORD:admin1234}
+    driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    out-of-order: false
 
 management:
   endpoints:
@@ -26,10 +59,11 @@ management:
     readinessState:
       enabled: true
 
-kafka:
-  topics:
-    product-created: koosco.commerce.product.created
-    sku-created: koosco.commerce.sku.created
+jwt:
+  secret: ${JWT_SECRET:mySecretKeyForJWTWhichShouldBeAtLeast256BitsLongToEnsureSecurityAndCompliance}
+  expiration: ${JWT_EXPIRATION:86400} # 24 hours in seconds
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800} # 7 days in seconds
+
 
 springdoc:
   swagger-ui:
