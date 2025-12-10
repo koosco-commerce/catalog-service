@@ -1,8 +1,7 @@
-package com.koosco.catalogservice.category.api.dto
+package com.koosco.catalogservice.category.api
 
-import com.koosco.catalogservice.category.application.dto.*
-import jakarta.validation.constraints.Min
-import jakarta.validation.constraints.NotBlank
+import com.koosco.catalogservice.category.application.dto.CategoryInfo
+import com.koosco.catalogservice.category.application.dto.CategoryTreeInfo
 
 data class CategoryResponse(val id: Long, val name: String, val parentId: Long?, val depth: Int, val ordering: Int) {
     companion object {
@@ -30,18 +29,4 @@ data class CategoryTreeResponse(
             children = treeInfo.children.map { from(it) },
         )
     }
-}
-
-data class CategoryCreateRequest(
-    @field:NotBlank(message = "Category name is required")
-    val name: String,
-    val parentId: Long?,
-    @field:Min(value = 0, message = "Ordering must be non-negative")
-    val ordering: Int = 0,
-) {
-    fun toCommand(): CreateCategoryCommand = CreateCategoryCommand(
-        name = name,
-        parentId = parentId,
-        ordering = ordering,
-    )
 }
