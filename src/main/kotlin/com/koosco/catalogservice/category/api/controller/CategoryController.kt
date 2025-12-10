@@ -1,8 +1,9 @@
 package com.koosco.catalogservice.category.api.controller
 
-import com.koosco.catalogservice.category.api.dto.CategoryCreateRequest
-import com.koosco.catalogservice.category.api.dto.CategoryResponse
-import com.koosco.catalogservice.category.api.dto.CategoryTreeResponse
+import com.koosco.catalogservice.category.api.CategoryCreateRequest
+import com.koosco.catalogservice.category.api.CategoryResponse
+import com.koosco.catalogservice.category.api.CategoryTreeCreateRequest
+import com.koosco.catalogservice.category.api.CategoryTreeResponse
 import com.koosco.catalogservice.category.application.dto.GetCategoryListCommand
 import com.koosco.catalogservice.category.application.usecase.*
 import com.koosco.common.core.response.ApiResponse
@@ -21,6 +22,7 @@ class CategoryController(
     private val getCategoryListUseCase: GetCategoryListUseCase,
     private val getCategoryTreeUseCase: GetCategoryTreeUseCase,
     private val createCategoryUseCase: CreateCategoryUseCase,
+    private val createCategoryTreeUseCase: CreateCategoryTreeUseCase,
 ) {
     @Operation(
         summary = "카테고리 목록 조회",
@@ -62,5 +64,20 @@ class CategoryController(
         val categoryInfo = createCategoryUseCase.execute(command)
 
         return ApiResponse.success(CategoryResponse.from(categoryInfo))
+    }
+
+    @Operation(
+        summary = "카테고리 트리를 생성합니다.",
+        description = "계층 구조를 가진 카테고리 트리를 한 번에 생성합니다. 관리자만 사용 가능합니다.",
+        security = [SecurityRequirement(name = "bearerAuth")],
+    )
+    @PostMapping("/tree")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun createCategoryTree(@Valid @RequestBody request: CategoryTreeCreateRequest): ApiResponse<CategoryTreeResponse> {
+        val command = request.toCommand()
+
+        val categoryTreeInfo = createCategoryTreeUseCase.execute(command)
+
+        return ApiResponse.success(CategoryTreeResponse.from(categoryTreeInfo))
     }
 }

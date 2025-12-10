@@ -1,5 +1,8 @@
 package com.koosco.catalogservice.category.domain
 
+import com.koosco.catalogservice.category.application.dto.CreateCategoryTreeCommand
+import com.koosco.catalogservice.common.exception.CatalogErrorCode
+import com.koosco.common.core.exception.ConflictException
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -20,7 +23,7 @@ class Category(
     @JoinColumn(name = "parent_id")
     var parent: Category? = null,
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = [CascadeType.ALL], orphanRemoval = true)
     val children: MutableList<Category> = mutableListOf(),
 
     @Column(nullable = false)
@@ -51,6 +54,20 @@ class Category(
 
     override fun hashCode(): Int = id?.hashCode() ?: 0
 
+    fun hasNoDuplicateChild(name: String) {
+        if (children.any { it.name == name }) {
+            throw ConflictException(
+                errorCode = CatalogErrorCode.CATEGORY_NAME_CONFLICT,
+                message = "${this.name} 하위에 이미 ${name}이 존재합니다.",
+            )
+        }
+    }
+
+    fun addChild(child: Category) {
+        hasNoDuplicateChild(child.name)
+        children.add(child)
+    }
+
     companion object {
 
         fun of(name: String, parent: Category? = null, ordering: Int = 0): Category {
@@ -64,6 +81,28 @@ class Category(
                 depth = depth,
                 ordering = ordering,
             )
+        }
+
+        fun createTree(command: CreateCategoryTreeCommand): Category = createNodeRecursively(command, null)
+        private fun createNodeRecursively(command: CreateCategoryTreeCommand, parent: Category?): Category {
+            parent?.hasNoDuplicateChild(command.name)
+
+            // 현재 노드 생성
+            val category = of(
+                name = command.name,
+                parent = parent,
+                ordering = command.ordering,
+            )
+
+            // 부모-자식 관계 설정
+            parent?.addChild(category)
+
+            // 자식 생성
+            command.children.forEach { childCommand ->
+                createNodeRecursively(childCommand, category)
+            }
+
+            return category
         }
     }
 }

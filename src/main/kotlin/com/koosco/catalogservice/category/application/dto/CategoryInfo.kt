@@ -14,4 +14,13 @@ data class CategoryInfo(val id: Long, val name: String, val parentId: Long?, val
     }
 }
 
-data class CategoryTreeInfo(val id: Long, val name: String, val depth: Int, val children: List<CategoryTreeInfo>)
+data class CategoryTreeInfo(val id: Long, val name: String, val depth: Int, val children: List<CategoryTreeInfo>) {
+    companion object {
+        fun from(category: Category): CategoryTreeInfo = CategoryTreeInfo(
+            id = category.id!!,
+            name = category.name,
+            depth = category.depth,
+            children = category.children.map { from(it) },
+        )
+    }
+}
