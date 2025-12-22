@@ -1,9 +1,9 @@
 package com.koosco.catalogservice.product.api.controller
 
-import com.koosco.catalogservice.product.api.dto.ProductCreateRequest
-import com.koosco.catalogservice.product.api.dto.ProductDetailResponse
-import com.koosco.catalogservice.product.api.dto.ProductListResponse
-import com.koosco.catalogservice.product.api.dto.ProductUpdateRequest
+import com.koosco.catalogservice.product.api.request.ProductCreateRequest
+import com.koosco.catalogservice.product.api.request.ProductUpdateRequest
+import com.koosco.catalogservice.product.api.response.ProductDetailResponse
+import com.koosco.catalogservice.product.api.response.ProductListResponse
 import com.koosco.catalogservice.product.application.dto.*
 import com.koosco.catalogservice.product.application.usecase.*
 import com.koosco.common.core.response.ApiResponse
