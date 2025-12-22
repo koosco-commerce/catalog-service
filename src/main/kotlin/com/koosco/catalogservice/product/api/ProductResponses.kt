@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.product.api.response
+package com.koosco.catalogservice.product.api
 
 import com.koosco.catalogservice.product.application.dto.ProductInfo
 import com.koosco.catalogservice.product.application.dto.ProductOptionGroupInfo

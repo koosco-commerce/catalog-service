@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.product.api.request
+package com.koosco.catalogservice.product.api
 
 import com.koosco.catalogservice.product.application.dto.*
 import com.koosco.catalogservice.product.domain.enums.ProductStatus

@@ -1,11 +1,13 @@
-package com.koosco.catalogservice.product.api.controller
+package com.koosco.catalogservice.product.api
 
-import com.koosco.catalogservice.product.api.request.ProductCreateRequest
-import com.koosco.catalogservice.product.api.request.ProductUpdateRequest
-import com.koosco.catalogservice.product.api.response.ProductDetailResponse
-import com.koosco.catalogservice.product.api.response.ProductListResponse
-import com.koosco.catalogservice.product.application.dto.*
-import com.koosco.catalogservice.product.application.usecase.*
+import com.koosco.catalogservice.product.application.dto.DeleteProductCommand
+import com.koosco.catalogservice.product.application.dto.GetProductDetailCommand
+import com.koosco.catalogservice.product.application.dto.GetProductListCommand
+import com.koosco.catalogservice.product.application.usecase.CreateProductUseCase
+import com.koosco.catalogservice.product.application.usecase.DeleteProductUseCase
+import com.koosco.catalogservice.product.application.usecase.GetProductDetailUseCase
+import com.koosco.catalogservice.product.application.usecase.GetProductListUseCase
+import com.koosco.catalogservice.product.application.usecase.UpdateProductUseCase
 import com.koosco.common.core.response.ApiResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -16,7 +18,16 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestController
 
 @Tag(name = "Product", description = "Product management APIs")
 @RestController
@@ -41,7 +52,7 @@ class ProductController(
             pageable = pageable,
         )
 
-        return ApiResponse.success(getProductListUseCase.execute(command).map { ProductListResponse.from(it) })
+        return ApiResponse.Companion.success(getProductListUseCase.execute(command).map { ProductListResponse.Companion.from(it) })
     }
 
     @Operation(summary = "상품 상세를 조회합니다.", description = "옵션을 포함하여 상품을 조회합니다.")
@@ -52,7 +63,7 @@ class ProductController(
         val command = GetProductDetailCommand(productId = productId)
         val productInfo = getProductDetailUseCase.execute(command)
 
-        return ApiResponse.success(ProductDetailResponse.from(productInfo))
+        return ApiResponse.Companion.success(ProductDetailResponse.Companion.from(productInfo))
     }
 
     @Operation(
@@ -65,7 +76,7 @@ class ProductController(
     fun createProduct(@Valid @RequestBody request: ProductCreateRequest): ApiResponse<ProductDetailResponse> {
         val productInfo = createProductUseCase.execute(request.toCommand())
 
-        return ApiResponse.success(ProductDetailResponse.from(productInfo))
+        return ApiResponse.Companion.success(ProductDetailResponse.Companion.from(productInfo))
     }
 
     @Operation(
@@ -80,7 +91,7 @@ class ProductController(
     ): ApiResponse<Any> {
         updateProductUseCase.execute(request.toCommand(productId))
 
-        return ApiResponse.success()
+        return ApiResponse.Companion.success()
     }
 
     @Operation(
@@ -93,6 +104,6 @@ class ProductController(
     fun deleteProduct(@Parameter(description = "Product ID") @PathVariable productId: Long): ApiResponse<Any> {
         deleteProductUseCase.execute(DeleteProductCommand(productId = productId))
 
-        return ApiResponse.success()
+        return ApiResponse.Companion.success()
     }
 }
