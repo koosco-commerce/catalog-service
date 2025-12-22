@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.product.infra.event.kafka
+package com.koosco.catalogservice.product.infra.messaging.kafka.producer
 
 import com.koosco.catalogservice.product.application.messaging.CreateProductEvent
 import com.koosco.catalogservice.product.application.messaging.CreateProductPublisher

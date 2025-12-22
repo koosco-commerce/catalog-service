@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.product.infra.config
+package com.koosco.catalogservice.common.infra.config
 
 import com.koosco.common.core.event.CloudEvent
 import jakarta.annotation.PostConstruct

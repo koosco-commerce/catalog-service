@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.product.infra.persist
+package com.koosco.catalogservice.product.infra.persist.jpa
 
 import com.koosco.catalogservice.product.domain.entity.Product
 import com.koosco.catalogservice.product.domain.enums.ProductStatus
