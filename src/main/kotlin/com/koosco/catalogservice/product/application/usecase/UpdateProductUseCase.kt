@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 class UpdateProductUseCase(private val productRepository: ProductRepository) {
 
     @Transactional
-    fun update(command: UpdateProductCommand) {
+    fun execute(command: UpdateProductCommand) {
         val product = productRepository.findOrNull(command.productId)
             ?: throw NotFoundException(CatalogErrorCode.PRODUCT_NOT_FOUND)
 

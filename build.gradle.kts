@@ -46,13 +46,17 @@ repositories {
 }
 
 dependencies {
+    // kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    // spring
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("com.koosco:common-core:0.1.0")
+
+    // common
+    implementation("com.koosco:common-core:0.2.0")
     implementation("com.koosco:common-security:0.0.2")
 
     // kafka
@@ -71,9 +75,8 @@ dependencies {
     kapt("jakarta.annotation:jakarta.annotation-api")
     kapt("jakarta.persistence:jakarta.persistence-api")
 
-    // open feign
-    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
-    implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
     // swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.1")

@@ -63,7 +63,7 @@ class ProductController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createProduct(@Valid @RequestBody request: ProductCreateRequest): ApiResponse<ProductDetailResponse> {
-        val productInfo = createProductUseCase.create(request.toCommand())
+        val productInfo = createProductUseCase.execute(request.toCommand())
 
         return ApiResponse.success(ProductDetailResponse.from(productInfo))
     }
@@ -78,7 +78,7 @@ class ProductController(
         @Parameter(description = "Product ID") @PathVariable productId: Long,
         @Valid @RequestBody request: ProductUpdateRequest,
     ): ApiResponse<Any> {
-        updateProductUseCase.update(request.toCommand(productId))
+        updateProductUseCase.execute(request.toCommand(productId))
 
         return ApiResponse.success()
     }
@@ -91,7 +91,7 @@ class ProductController(
     @DeleteMapping("/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteProduct(@Parameter(description = "Product ID") @PathVariable productId: Long): ApiResponse<Any> {
-        deleteProductUseCase.delete(DeleteProductCommand(productId = productId))
+        deleteProductUseCase.execute(DeleteProductCommand(productId = productId))
 
         return ApiResponse.success()
     }

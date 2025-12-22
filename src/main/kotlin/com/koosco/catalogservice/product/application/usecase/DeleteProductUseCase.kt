@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 class DeleteProductUseCase(private val productRepository: ProductRepository) {
 
     @Transactional
-    fun delete(command: DeleteProductCommand) {
+    fun execute(command: DeleteProductCommand) {
         val product = productRepository.findOrNull(command.productId)
             ?: throw NotFoundException(CatalogErrorCode.PRODUCT_NOT_FOUND)
 

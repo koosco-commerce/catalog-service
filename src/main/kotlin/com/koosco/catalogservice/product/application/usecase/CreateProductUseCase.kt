@@ -29,7 +29,7 @@ class CreateProductUseCase(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Transactional
-    fun create(command: CreateProductCommand): ProductInfo {
+    fun execute(command: CreateProductCommand): ProductInfo {
         // Category 조회 및 code 추출
         val categoryCode = command.categoryId?.let { categoryId ->
             categoryRepository.findByIdOrNull(categoryId)?.code
