@@ -1,7 +1,7 @@
 package com.koosco.catalogservice.product.infra.event.kafka
 
-import com.koosco.catalogservice.product.application.event.CreateProductEvent
-import com.koosco.catalogservice.product.application.event.CreateProductPublisher
+import com.koosco.catalogservice.product.application.messaging.CreateProductEvent
+import com.koosco.catalogservice.product.application.messaging.CreateProductPublisher
 import com.koosco.common.core.event.CloudEvent
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.kafka.core.KafkaTemplate

@@ -1,6 +1,20 @@
-package com.koosco.catalogservice.product.domain
+package com.koosco.catalogservice.product.domain.entity
 
-import jakarta.persistence.*
+import com.koosco.catalogservice.product.domain.entity.ProductOptionGroup
+import com.koosco.catalogservice.product.domain.entity.ProductSku
+import com.koosco.catalogservice.product.domain.enums.ProductStatus
+import com.koosco.catalogservice.product.domain.vo.OptionGroupCreateSpec
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
+import jakarta.persistence.PreUpdate
+import jakarta.persistence.Table
 import java.time.LocalDateTime
 
 @Entity

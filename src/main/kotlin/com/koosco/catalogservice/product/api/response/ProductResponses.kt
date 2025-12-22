@@ -3,9 +3,9 @@ package com.koosco.catalogservice.product.api.response
 import com.koosco.catalogservice.product.application.dto.ProductInfo
 import com.koosco.catalogservice.product.application.dto.ProductOptionGroupInfo
 import com.koosco.catalogservice.product.application.dto.ProductOptionInfo
-import com.koosco.catalogservice.product.domain.ProductOption
-import com.koosco.catalogservice.product.domain.ProductOptionGroup
-import com.koosco.catalogservice.product.domain.ProductStatus
+import com.koosco.catalogservice.product.domain.entity.ProductOption
+import com.koosco.catalogservice.product.domain.entity.ProductOptionGroup
+import com.koosco.catalogservice.product.domain.enums.ProductStatus
 
 /**
  * fileName       : ProductResponses

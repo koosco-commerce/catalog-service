@@ -1,6 +1,6 @@
 package com.koosco.catalogservice.product.domain.service
 
-import com.koosco.catalogservice.product.domain.OptionGroupCreateSpec
+import com.koosco.catalogservice.product.domain.vo.OptionGroupCreateSpec
 import org.springframework.stereotype.Service
 
 @Service

@@ -1,7 +1,7 @@
 package com.koosco.catalogservice.product.api.request
 
 import com.koosco.catalogservice.product.application.dto.*
-import com.koosco.catalogservice.product.domain.ProductStatus
+import com.koosco.catalogservice.product.domain.enums.ProductStatus
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank

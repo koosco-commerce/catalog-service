@@ -1,7 +1,7 @@
-package com.koosco.catalogservice.product.application.event
+package com.koosco.catalogservice.product.application.messaging
 
-import com.koosco.catalogservice.product.domain.Product
-import com.koosco.catalogservice.product.domain.ProductSku
+import com.koosco.catalogservice.product.domain.entity.Product
+import com.koosco.catalogservice.product.domain.entity.ProductSku
 import java.time.LocalDateTime
 
 fun Product.toCreateProductEvent(): CreateProductEvent = CreateProductEvent(

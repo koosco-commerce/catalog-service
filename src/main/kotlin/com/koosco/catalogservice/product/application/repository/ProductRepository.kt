@@ -1,7 +1,7 @@
 package com.koosco.catalogservice.product.application.repository
 
-import com.koosco.catalogservice.product.domain.Product
-import com.koosco.catalogservice.product.domain.ProductStatus
+import com.koosco.catalogservice.product.domain.entity.Product
+import com.koosco.catalogservice.product.domain.enums.ProductStatus
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 

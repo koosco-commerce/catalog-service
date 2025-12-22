@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.product.domain
+package com.koosco.catalogservice.product.domain.vo
 
 data class OptionGroupCreateSpec(val name: String, val ordering: Int, val options: List<CreateOptionSpec>)
 

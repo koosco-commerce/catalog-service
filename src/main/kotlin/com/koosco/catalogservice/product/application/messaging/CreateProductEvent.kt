@@ -1,6 +1,6 @@
-package com.koosco.catalogservice.product.application.event
+package com.koosco.catalogservice.product.application.messaging
 
-import com.koosco.catalogservice.product.domain.ProductStatus
+import com.koosco.catalogservice.product.domain.enums.ProductStatus
 import java.time.LocalDateTime
 
 /**

@@ -1,6 +1,6 @@
 package com.koosco.catalogservice.product.application.dto
 
-import com.koosco.catalogservice.product.domain.ProductStatus
+import com.koosco.catalogservice.product.domain.enums.ProductStatus
 import org.springframework.data.domain.Pageable
 
 data class GetProductListCommand(val categoryId: Long?, val keyword: String?, val pageable: Pageable)

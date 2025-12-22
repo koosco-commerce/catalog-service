@@ -1,7 +1,7 @@
 package com.koosco.catalogservice.product.infra.event.kafka
 
-import com.koosco.catalogservice.product.application.event.SkuCreatedEvent
-import com.koosco.catalogservice.product.application.event.SkuCreatedPublisher
+import com.koosco.catalogservice.product.application.messaging.SkuCreatedEvent
+import com.koosco.catalogservice.product.application.messaging.SkuCreatedPublisher
 import com.koosco.common.core.event.CloudEvent
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value

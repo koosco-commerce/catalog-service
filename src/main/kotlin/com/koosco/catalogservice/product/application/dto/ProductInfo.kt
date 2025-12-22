@@ -1,9 +1,9 @@
 package com.koosco.catalogservice.product.application.dto
 
-import com.koosco.catalogservice.product.domain.Product
-import com.koosco.catalogservice.product.domain.ProductOption
-import com.koosco.catalogservice.product.domain.ProductOptionGroup
-import com.koosco.catalogservice.product.domain.ProductStatus
+import com.koosco.catalogservice.product.domain.entity.Product
+import com.koosco.catalogservice.product.domain.entity.ProductOption
+import com.koosco.catalogservice.product.domain.entity.ProductOptionGroup
+import com.koosco.catalogservice.product.domain.enums.ProductStatus
 
 data class ProductInfo(
     val id: Long,

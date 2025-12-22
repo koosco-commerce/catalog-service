@@ -1,7 +1,7 @@
 package com.koosco.catalogservice.product.domain.service
 
-import com.koosco.catalogservice.product.domain.Product
-import com.koosco.catalogservice.product.domain.ProductSku
+import com.koosco.catalogservice.product.domain.entity.Product
+import com.koosco.catalogservice.product.domain.entity.ProductSku
 import org.springframework.stereotype.Service
 
 @Service
