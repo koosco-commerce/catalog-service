@@ -1,8 +1,8 @@
 package com.koosco.catalogservice.product.api
 
-import com.koosco.catalogservice.product.application.dto.DeleteProductCommand
-import com.koosco.catalogservice.product.application.dto.GetProductDetailCommand
-import com.koosco.catalogservice.product.application.dto.GetProductListCommand
+import com.koosco.catalogservice.product.application.command.DeleteProductCommand
+import com.koosco.catalogservice.product.application.command.GetProductDetailCommand
+import com.koosco.catalogservice.product.application.command.GetProductListCommand
 import com.koosco.catalogservice.product.application.usecase.CreateProductUseCase
 import com.koosco.catalogservice.product.application.usecase.DeleteProductUseCase
 import com.koosco.catalogservice.product.application.usecase.GetProductDetailUseCase
@@ -52,7 +52,11 @@ class ProductController(
             pageable = pageable,
         )
 
-        return ApiResponse.Companion.success(getProductListUseCase.execute(command).map { ProductListResponse.Companion.from(it) })
+        return ApiResponse.success(
+            getProductListUseCase.execute(command).map {
+                ProductListResponse.from(it)
+            },
+        )
     }
 
     @Operation(summary = "상품 상세를 조회합니다.", description = "옵션을 포함하여 상품을 조회합니다.")
@@ -63,7 +67,7 @@ class ProductController(
         val command = GetProductDetailCommand(productId = productId)
         val productInfo = getProductDetailUseCase.execute(command)
 
-        return ApiResponse.Companion.success(ProductDetailResponse.Companion.from(productInfo))
+        return ApiResponse.success(ProductDetailResponse.from(productInfo))
     }
 
     @Operation(
@@ -76,7 +80,7 @@ class ProductController(
     fun createProduct(@Valid @RequestBody request: ProductCreateRequest): ApiResponse<ProductDetailResponse> {
         val productInfo = createProductUseCase.execute(request.toCommand())
 
-        return ApiResponse.Companion.success(ProductDetailResponse.Companion.from(productInfo))
+        return ApiResponse.success(ProductDetailResponse.from(productInfo))
     }
 
     @Operation(
@@ -91,7 +95,7 @@ class ProductController(
     ): ApiResponse<Any> {
         updateProductUseCase.execute(request.toCommand(productId))
 
-        return ApiResponse.Companion.success()
+        return ApiResponse.success()
     }
 
     @Operation(
@@ -104,6 +108,6 @@ class ProductController(
     fun deleteProduct(@Parameter(description = "Product ID") @PathVariable productId: Long): ApiResponse<Any> {
         deleteProductUseCase.execute(DeleteProductCommand(productId = productId))
 
-        return ApiResponse.Companion.success()
+        return ApiResponse.success()
     }
 }

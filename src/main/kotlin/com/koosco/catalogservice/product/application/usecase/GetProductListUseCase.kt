@@ -1,8 +1,8 @@
 package com.koosco.catalogservice.product.application.usecase
 
-import com.koosco.catalogservice.product.application.dto.GetProductListCommand
-import com.koosco.catalogservice.product.application.dto.ProductInfo
-import com.koosco.catalogservice.product.application.repository.ProductRepository
+import com.koosco.catalogservice.product.application.command.GetProductListCommand
+import com.koosco.catalogservice.product.application.port.ProductRepository
+import com.koosco.catalogservice.product.application.result.ProductInfo
 import com.koosco.catalogservice.product.domain.enums.ProductStatus
 import com.koosco.common.core.annotation.UseCase
 import org.springframework.data.domain.Page

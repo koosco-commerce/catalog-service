@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.product.application.repository
+package com.koosco.catalogservice.product.application.port
 
 import com.koosco.catalogservice.product.domain.entity.Product
 import com.koosco.catalogservice.product.domain.enums.ProductStatus

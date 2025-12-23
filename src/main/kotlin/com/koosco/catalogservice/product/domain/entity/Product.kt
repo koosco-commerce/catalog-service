@@ -1,7 +1,5 @@
 package com.koosco.catalogservice.product.domain.entity
 
-import com.koosco.catalogservice.product.domain.entity.ProductOptionGroup
-import com.koosco.catalogservice.product.domain.entity.ProductSku
 import com.koosco.catalogservice.product.domain.enums.ProductStatus
 import com.koosco.catalogservice.product.domain.vo.OptionGroupCreateSpec
 import jakarta.persistence.CascadeType
@@ -104,7 +102,9 @@ class Product(
 
     fun addSkus(skus: List<ProductSku>) {
         this.skus.addAll(skus)
-        skus.forEach { it.product = this }
+        skus.forEach { sku ->
+            sku.product = this
+        }
     }
 
     companion object {
@@ -132,7 +132,6 @@ class Product(
                 brand = brand,
             )
 
-            // 옵션 그룹 생성
             optionGroupSpecs.forEach { groupSpec ->
                 val optionGroup =
                     ProductOptionGroup.create(
@@ -152,7 +151,8 @@ class Product(
             // Category code에서 prefix 추출 (예: "electronics" -> "ELEC")
             val prefix = categoryCode?.uppercase()?.take(4) ?: "PRD"
 
-            val date = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd"))
+            val date =
+                LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd"))
             val shortId = java.util.UUID.randomUUID().toString().substring(0, 4).uppercase()
 
             return "$prefix-$date-$shortId"

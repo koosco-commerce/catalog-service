@@ -1,13 +1,11 @@
 package com.koosco.catalogservice.product.application.usecase
 
 import com.koosco.catalogservice.category.application.repository.CategoryRepository
-import com.koosco.catalogservice.product.application.dto.CreateProductCommand
-import com.koosco.catalogservice.product.application.dto.ProductInfo
-import com.koosco.catalogservice.product.application.messaging.CreateProductPublisher
-import com.koosco.catalogservice.product.application.messaging.SkuCreatedPublisher
-import com.koosco.catalogservice.product.application.messaging.toCreateProductEvent
-import com.koosco.catalogservice.product.application.messaging.toSkuCreatedEvents
-import com.koosco.catalogservice.product.application.repository.ProductRepository
+import com.koosco.catalogservice.product.application.command.CreateProductCommand
+import com.koosco.catalogservice.product.application.contract.outobound.ProductSkuCreatedEvent
+import com.koosco.catalogservice.product.application.port.IntegrationEventPublisher
+import com.koosco.catalogservice.product.application.port.ProductRepository
+import com.koosco.catalogservice.product.application.result.ProductInfo
 import com.koosco.catalogservice.product.domain.entity.Product
 import com.koosco.catalogservice.product.domain.service.ProductValidator
 import com.koosco.catalogservice.product.domain.service.SkuGenerator
@@ -16,15 +14,15 @@ import com.koosco.catalogservice.product.domain.vo.OptionGroupCreateSpec
 import com.koosco.common.core.annotation.UseCase
 import org.slf4j.LoggerFactory
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @UseCase
 class CreateProductUseCase(
     private val productRepository: ProductRepository,
     private val categoryRepository: CategoryRepository,
-    private val createProductPublisher: CreateProductPublisher,
-    private val skuCreatedPublisher: SkuCreatedPublisher,
     private val skuGenerator: SkuGenerator,
     private val productValidator: ProductValidator,
+    private val integrationEventPublisher: IntegrationEventPublisher,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -71,16 +69,25 @@ class CreateProductUseCase(
         // 상품 정보 저장 (SKU도 함께 저장)
         val savedProduct = productRepository.save(product)
 
+        // Product 생성 도메인 이벤트 발행
         logger.info(
             "Product created: productId=${savedProduct.id}, " +
-                "skuCount=${savedProduct.skus.size}",
+                    "skuCount=${savedProduct.skus.size}, ",
         )
 
-        // 1. 상품 생성 이벤트 발행
-        createProductPublisher.publish(savedProduct.toCreateProductEvent())
-
-        // 2. 각 SKU 생성 이벤트 개별 발행 (Outbox 패턴 적용 예정)
-        skuCreatedPublisher.publishAll(savedProduct.toSkuCreatedEvents())
+        product.skus.forEach {
+            integrationEventPublisher.publish(
+                ProductSkuCreatedEvent(
+                    skuId = it.skuId,
+                    productId = product.id!!,
+                    productCode = product.productCode,
+                    price = it.price,
+                    optionValues = it.optionValues,
+                    initialQuantity = 0,
+                    createdAt = LocalDateTime.now(),
+                ),
+            )
+        }
 
         return ProductInfo.from(savedProduct)
     }

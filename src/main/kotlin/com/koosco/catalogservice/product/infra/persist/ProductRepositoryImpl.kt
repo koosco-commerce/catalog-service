@@ -1,6 +1,6 @@
 package com.koosco.catalogservice.product.infra.persist
 
-import com.koosco.catalogservice.product.application.repository.ProductRepository
+import com.koosco.catalogservice.product.application.port.ProductRepository
 import com.koosco.catalogservice.product.domain.entity.Product
 import com.koosco.catalogservice.product.domain.enums.ProductStatus
 import com.koosco.catalogservice.product.infra.persist.jpa.JpaProductRepository
