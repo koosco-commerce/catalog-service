@@ -64,6 +64,11 @@ jwt:
   expiration: ${JWT_EXPIRATION:86400} # 24 hours in seconds
   refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800} # 7 days in seconds
 
+catalog:
+  topic:
+    default: koosco.commerce.catalog.default
+    mappings:
+      "product.sku.created": koosco.commerce.product.default
 
 springdoc:
   swagger-ui:

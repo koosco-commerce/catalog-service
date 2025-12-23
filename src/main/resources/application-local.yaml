@@ -1,7 +1,3 @@
 server:
   port: 8084
 
-kafka:
-  topics:
-    product-created: koosco.commerce.local.product.created
-    sku-created: koosco.commerce.local.sku.created

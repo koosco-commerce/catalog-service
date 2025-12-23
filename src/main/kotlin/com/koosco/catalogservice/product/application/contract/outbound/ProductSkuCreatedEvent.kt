@@ -1,4 +1,4 @@
-package com.koosco.catalogservice.product.application.contract.outobound
+package com.koosco.catalogservice.product.application.contract.outbound
 
 import com.koosco.catalogservice.product.application.contract.ProductIntegrationEvent
 import java.time.LocalDateTime

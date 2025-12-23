@@ -2,7 +2,7 @@ package com.koosco.catalogservice.product.application.usecase
 
 import com.koosco.catalogservice.category.application.repository.CategoryRepository
 import com.koosco.catalogservice.product.application.command.CreateProductCommand
-import com.koosco.catalogservice.product.application.contract.outobound.ProductSkuCreatedEvent
+import com.koosco.catalogservice.product.application.contract.outbound.ProductSkuCreatedEvent
 import com.koosco.catalogservice.product.application.port.IntegrationEventPublisher
 import com.koosco.catalogservice.product.application.port.ProductRepository
 import com.koosco.catalogservice.product.application.result.ProductInfo
@@ -72,14 +72,14 @@ class CreateProductUseCase(
         // Product 생성 도메인 이벤트 발행
         logger.info(
             "Product created: productId=${savedProduct.id}, " +
-                    "skuCount=${savedProduct.skus.size}, ",
+                "skuCount=${savedProduct.skus.size}, ",
         )
 
         product.skus.forEach {
             integrationEventPublisher.publish(
                 ProductSkuCreatedEvent(
                     skuId = it.skuId,
-                    productId = product.id!!,
+                    productId = savedProduct.id!!,
                     productCode = product.productCode,
                     price = it.price,
                     optionValues = it.optionValues,

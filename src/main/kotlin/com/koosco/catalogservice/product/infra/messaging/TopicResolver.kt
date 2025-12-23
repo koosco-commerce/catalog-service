@@ -8,6 +8,6 @@ import com.koosco.catalogservice.product.application.contract.ProductIntegration
  * date           : 2025. 12. 19. 오후 3:00
  * description    :
  */
-interface IntegrationTopicResolver {
+interface TopicResolver {
     fun resolve(event: ProductIntegrationEvent): String
 }
