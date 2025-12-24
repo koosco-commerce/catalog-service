@@ -3,9 +3,6 @@ package com.koosco.catalogservice.product.application.command
 import com.koosco.catalogservice.product.domain.enums.ProductStatus
 import org.springframework.data.domain.Pageable
 
-data class GetProductListCommand(val categoryId: Long?, val keyword: String?, val pageable: Pageable)
-
-data class GetProductDetailCommand(val productId: Long)
 
 data class CreateProductCommand(
     val name: String,

@@ -1,10 +1,13 @@
 package com.koosco.catalogservice.product.api
 
+import com.koosco.catalogservice.product.api.response.SkuResponse
 import com.koosco.catalogservice.product.application.command.DeleteProductCommand
+import com.koosco.catalogservice.product.application.command.FindSkuCommand
 import com.koosco.catalogservice.product.application.command.GetProductDetailCommand
 import com.koosco.catalogservice.product.application.command.GetProductListCommand
 import com.koosco.catalogservice.product.application.usecase.CreateProductUseCase
 import com.koosco.catalogservice.product.application.usecase.DeleteProductUseCase
+import com.koosco.catalogservice.product.application.usecase.FindSkuUseCase
 import com.koosco.catalogservice.product.application.usecase.GetProductDetailUseCase
 import com.koosco.catalogservice.product.application.usecase.GetProductListUseCase
 import com.koosco.catalogservice.product.application.usecase.UpdateProductUseCase
@@ -38,6 +41,7 @@ class ProductController(
     private val createProductUseCase: CreateProductUseCase,
     private val updateProductUseCase: UpdateProductUseCase,
     private val deleteProductUseCase: DeleteProductUseCase,
+    private val findSkuUseCase: FindSkuUseCase,
 ) {
     @Operation(summary = "상품 리스트를 조회합니다.", description = "필터링 조건에 따라 상품을 페이징처리하여 조회합니다.")
     @GetMapping
@@ -68,6 +72,31 @@ class ProductController(
         val productInfo = getProductDetailUseCase.execute(command)
 
         return ApiResponse.success(ProductDetailResponse.from(productInfo))
+    }
+
+    @Operation(
+        summary = "옵션 조합으로 SKU를 조회합니다.",
+        description = "사용자가 선택한 옵션 조합에 해당하는 SKU 정보(가격, 재고 등)를 조회합니다. " +
+            "예시: GET /api/catalog/products/2/skus?Volume=100ml&Package=Single",
+    )
+    @GetMapping("/{productId}/skus")
+    fun findSku(
+        @Parameter(description = "Product ID") @PathVariable productId: Long,
+        @Parameter(description = "옵션 조합 (예: Volume=100ml&Package=Single)")
+        @RequestParam allRequestParams: Map<String, String>,
+    ): ApiResponse<SkuResponse> {
+        // 옵션이 비어있는지 검증
+        if (allRequestParams.isEmpty()) {
+            throw IllegalArgumentException("옵션을 선택해주세요")
+        }
+
+        val command = FindSkuCommand(
+            productId = productId,
+            options = allRequestParams,
+        )
+        val sku = findSkuUseCase.execute(command)
+
+        return ApiResponse.success(SkuResponse.from(sku))
     }
 
     @Operation(

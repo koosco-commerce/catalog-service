@@ -51,7 +51,7 @@ class ProductSku(
             // 옵션을 JSON 문자열로 변환 (정렬된 순서 유지)
             val sortedOptions = options.entries
                 .sortedBy { it.key }
-                .associate { it.key to it.value }
+                .associateTo(linkedMapOf()) { it.key to it.value } // LinkedHashMap 사용
             val optionValues = objectMapper.writeValueAsString(sortedOptions)
 
             return ProductSku(
