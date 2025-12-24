@@ -39,6 +39,7 @@ class ProductOptionGroup(
     var updatedAt: LocalDateTime = LocalDateTime.now(),
 
     @OneToMany(mappedBy = "optionGroup", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @org.hibernate.annotations.BatchSize(size = 10)
     val options: MutableList<ProductOption> = mutableListOf(),
 ) {
     @PreUpdate

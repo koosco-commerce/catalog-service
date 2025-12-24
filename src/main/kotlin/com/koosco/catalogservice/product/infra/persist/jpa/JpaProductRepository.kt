@@ -24,6 +24,6 @@ interface JpaProductRepository : JpaRepository<Product, Long> {
         pageable: Pageable,
     ): Page<Product>
 
-    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.optionGroups og LEFT JOIN FETCH og.options WHERE p.id = :id")
+    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.optionGroups WHERE p.id = :id")
     fun findByIdWithOptions(@Param("id") id: Long): Product?
 }
