@@ -1,6 +1,8 @@
 package com.koosco.catalogservice.product.application.command
 
 import com.koosco.catalogservice.product.domain.enums.ProductStatus
+import org.springframework.data.domain.Pageable
+
 
 data class CreateProductCommand(
     val name: String,
