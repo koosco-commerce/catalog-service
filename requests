@@ -1,0 +1,272 @@
+POST 카테고리 트리 생성 (뷰티)
+{
+    "name": "뷰티",
+    "ordering": 0,
+    "children": [
+        {
+            "name": "스킨케어",
+            "ordering": 0
+        },
+        {
+            "name": "마스크팩",
+            "ordering": 1
+        },
+        {
+            "name": "베이스메이크업",
+            "ordering": 2
+        },
+        {
+            "name": "립메이크업",
+            "ordering": 3
+        },
+        {
+            "name": "아이메이크업",
+            "ordering": 4
+        },
+        {
+            "name": "네일",
+            "ordering": 5
+        },
+        {
+            "name": "프레그런스",
+            "ordering": 6
+        },
+        {
+            "name": "선케어",
+            "ordering": 7
+        },
+        {
+            "name": "클렌징/필링",
+            "ordering": 8
+        },
+        {
+            "name": "헤어케어",
+            "ordering": 9
+        },
+        {
+            "name": "바디케어",
+            "ordering": 10
+        },
+        {
+            "name": "쉐이빙/제모",
+            "ordering": 11
+        },
+        {
+            "name": "뷰티 디바이스/소품",
+            "ordering": 12
+        },
+        {
+            "name": "미용소품",
+            "ordering": 13
+        },
+        {
+            "name": "헬스/푸드",
+            "ordering": 3
+        }
+    ]
+}
+
+{
+    "name": "신발",
+    "ordering": 1,
+    "children": [
+        {
+            "name": "스니커즈",
+            "ordering": 0
+        },
+        {
+            "name": "패딩/퍼 신발",
+            "ordering": 1
+        },
+        {
+            "name": "부츠/워커",
+            "ordering": 2
+        },
+        {
+            "name": "구두",
+            "ordering": 3
+        },
+        {
+            "name": "샌들/슬리퍼",
+            "ordering": 4
+        },
+        {
+            "name": "스포츠화",
+            "ordering": 5
+        },
+        {
+            "name": "신발용품",
+            "ordering": 6
+        }
+    ]
+}
+
+{
+    "name": "상의",
+    "ordering": 2,
+    "children": [
+        {
+            "name": "맨투맨/스웨트",
+            "ordering": 0
+        },
+        {
+            "name": "후드 티셔츠",
+            "ordering": 1
+        },
+        {
+            "name": "셔츠/블라우스",
+            "ordering": 2
+        },
+        {
+            "name": "긴소매 티셔츠",
+            "ordering": 3
+        },
+        {
+            "name": "반소매 티셔츠",
+            "ordering": 4
+        },
+        {
+            "name": "피케/카라 티셔츠",
+            "ordering": 5
+        },
+        {
+            "name": "니트/스웨터",
+            "ordering": 6
+        },
+        {
+            "name": "민소매 티셔츠",
+            "ordering": 7
+        },
+        {
+            "name": "기타 상의",
+            "ordering": 8
+        }
+    ]
+}
+
+{
+    "name": "아우터",
+    "ordering": 3,
+    "children": [
+        {
+            "name": "경량 패딩/패딩 베스트",
+            "ordering": 0
+        },
+        {
+            "name": "숏패딩/헤비 아우터",
+            "ordering": 1
+        },
+        {
+            "name": "롱패딩/헤비 아우터",
+            "ordering": 2
+        },
+        {
+            "name": "플리스/뽀글이",
+            "ordering": 3
+        },
+        {
+            "name": "무스탕/퍼",
+            "ordering": 4
+        },
+        {
+            "name": "레더/라이더스 재킷",
+            "ordering": 5
+        },
+        {
+            "name": "겨울 싱글 코트",
+            "ordering": 6
+        },
+        {
+            "name": "겨울 더블 코트",
+            "ordering": 7
+        },
+        {
+            "name": "겨울 기타 코트",
+            "ordering": 8
+        },
+        {
+            "name": "카디건",
+            "ordering": 9
+        },
+        {
+            "name": "후드 집업",
+            "ordering": 10
+        },
+        {
+            "name": "슈트/블레이저 재킷",
+            "ordering": 11
+        },
+        {
+            "name": "블루종/MA-1",
+            "ordering": 12
+        },
+        {
+            "name": "트러거 재킷",
+            "ordering": 13
+        },
+        {
+            "name": "스타디움 재킷",
+            "ordering": 14
+        },
+        {
+            "name": "나일론/코치 재킷",
+            "ordering": 15
+        },
+        {
+            "name": "사파리/헌팅 재킷",
+            "ordering": 16
+        },
+        {
+            "name": "아노락 재킷",
+            "ordering": 17
+        },
+        {
+            "name": "트레이닝 재킷",
+            "ordering": 18
+        },
+        {
+            "name": "베스트",
+            "ordering": 19
+        },
+        {
+            "name": "환절기 코트",
+            "ordering": 20
+        },
+        {
+            "name": "기타 아우터",
+            "ordering": 21
+        }
+    ]
+}
+
+{
+    "name": "원피스/스커트",
+    "ordering": 5,
+    "children": [
+        {
+            "name": "미니원피스",
+            "ordering": 0
+        },
+        {
+            "name": "미디원피스",
+            "ordering": 1
+        },
+        {
+            "name": "맥시원피스",
+            "ordering": 2
+        },
+        {
+            "name": "미니스커트",
+            "ordering": 3
+        },
+        {
+            "name": "미디스커트",
+            "ordering": 4
+        },
+        {
+            "name": "롱스커트",
+            "ordering": 5
+        }
+    ]
+}
+
